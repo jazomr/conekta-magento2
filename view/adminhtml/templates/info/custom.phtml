@@ -1,0 +1,37 @@
+<?php
+/**
+ * @var \Magento\Payment\Block\Info $block
+ * @see \Magento\Payment\Block\Info
+ */
+$title = $block->escapeHtml($block->getMethod()->getTitle());
+$barcode = $block->getBarcode();
+?>
+<dl class="payment-method">
+    <dt class="title"><?php /* @noEscape */ echo $title; ?></dt>
+    <table class="data-table admin__table-secondary">
+        <tbody>
+            <tr>
+                <td colspan="2" align="center">
+                    <img src="<?php echo $barcode->barcode_url; ?>" style="display: block; margin-left: auto; margin-right: auto;" alt="Barcode Image" />
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <strong><?php echo __('Reference Number:'); ?></strong>
+                </th>
+                <td>
+                    <?php echo $barcode->barcode; ?>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <strong><?php echo __('Expires at:'); ?></strong>
+                </th>
+                <td>
+                    <?php echo date("Y-m-d H:i:s",(int) $barcode->expires_at); ?>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</dl>
+<?php echo $block->getChildHtml(); ?>

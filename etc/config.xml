@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <payment>
+            <!-- Conekta Config -->
+            <conekta_config>
+                <model>Conekta\Model\Config</model>
+                <!-- Setup API Key's -->
+                <test_private_api_key backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <live_private_api_key backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <!-- // Setup API Key's // -->
+                <sandbox_mode>1</sandbox_mode>
+            </conekta_config>
+            <!-- // Conekta Config // -->
+            
+            <!-- Conekta Card -->
+            <conekta_card>
+                <active>0</active>
+                <model>Conekta\Model\Card</model>
+                <payment_action>authorize_capture</payment_action>
+                <title>Credit and Debit Cards</title>
+                <!-- Setup API Key's -->
+                <test_private_api_key backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <live_private_api_key backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <!-- // Setup API Key's // -->
+                <sandbox_mode>1</sandbox_mode>
+                <active_monthly_installments>1</active_monthly_installments>
+                <monthly_installments>3,6,9,12</monthly_installments>
+                <minimum_amount_monthly_installments>300</minimum_amount_monthly_installments>
+                <cctypes>AE,VI,MC</cctypes>
+                <allowspecific>0</allowspecific>
+                <min_order_total>0.50</min_order_total>
+                <sort_order>1</sort_order>
+            </conekta_card>
+            <!-- // Conekta Card // -->
+
+            <!-- Conekta OXXO -->
+            <conekta_oxxo>
+                <active>0</active>
+                <title>Conekta Oxxo</title>
+                <order_status>pending_payment</order_status>
+                <instructions>Instructions for OXXO payment.</instructions>
+                <payment_action>authorize</payment_action>
+                <model>Conekta\Model\Oxxo</model>
+                <group>offline</group>
+            </conekta_oxxo>
+            <!-- // Conekta OXXO // -->
+        </payment>
+    </default>
+</config>
