@@ -1,6 +1,6 @@
 <?php
 
-namespace Conekta\Block\Info;
+namespace Conekta\Payments\Block\Info;
 use Magento\Payment\Block\Info;
 
 class Custom extends Info {

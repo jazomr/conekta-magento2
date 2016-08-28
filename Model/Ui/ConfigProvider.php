@@ -1,6 +1,6 @@
 <?php
 
-namespace Conekta\Model\Ui;
+namespace Conekta\Payments\Model\Ui;
 
 use Magento\Checkout\Model\ConfigProviderInterface;
 use Magento\Payment\Helper\Data as PaymentHelper;

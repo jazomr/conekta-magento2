@@ -1,6 +1,6 @@
 <?php
 
-namespace Conekta\Model;
+namespace Conekta\Payments\Model;
 
 use Conekta\Conekta;
 use Conekta\Webhook;

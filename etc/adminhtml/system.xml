@@ -54,7 +54,7 @@
                 </field>
                 <field id="monthly_installments" translate="label" type="multiselect" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Monthly Installments Available</label>
-                    <source_model>Conekta\Model\Source\MonthlyInstallments</source_model>
+                    <source_model>Conekta\Payments\Model\Source\MonthlyInstallments</source_model>
                     <depends>
                         <field id="active_monthly_installments">1</field>
                     </depends>
@@ -70,7 +70,7 @@
                 <!-- // Monthly Installments // -->
                 <field id="cctypes" translate="label" type="multiselect" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Credit Card Types</label>
-                    <source_model>Conekta\Model\Source\Cctype</source_model>
+                    <source_model>Conekta\Payments\Model\Source\Cctype</source_model>
                 </field>
                 <field id="sort_order" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Sort Order</label>
@@ -105,7 +105,7 @@
                 </field>
                 <field id="order_status" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>New Order Status</label>
-                    <source_model>Conekta\Model\Config\Source\Order\Status\Pendingpayment</source_model>
+                    <source_model>Conekta\Payments\Model\Config\Source\Order\Status\Pendingpayment</source_model>
                 </field>
          
                 <field id="allowspecific" translate="label" type="allowspecific" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">

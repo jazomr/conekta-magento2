@@ -1,10 +1,10 @@
 <?php
 
-namespace Conekta\Observer;
+namespace Conekta\Payments\Observer;
 
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Message\ManagerInterface;
-use Conekta\Model\Config;
+use Conekta\Payments\Model\Config;
 use Magento\Framework\Event\Observer;
 /**
  * Class CreateWebhook

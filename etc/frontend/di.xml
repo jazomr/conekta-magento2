@@ -5,7 +5,7 @@
         <arguments>
             <argument name="routerList" xsi:type="array">
                 <item name="conektarouter" xsi:type="array">
-                    <item name="class" xsi:type="string">Conekta\Controller\Router</item>
+                    <item name="class" xsi:type="string">Conekta\Payments\Controller\Router</item>
                     <item name="disable" xsi:type="boolean">false</item>
                     <item name="sortOrder" xsi:type="string">22</item>
                 </item>
@@ -15,10 +15,10 @@
     <!-- // Conekta Config // -->
 
     <!-- Conekta Card -->
-    <virtualType name="Conekta\Model\ConfigProvider" type="Magento\Payment\Model\CcGenericConfigProvider">
+    <virtualType name="Conekta\Payments\Model\ConfigProvider" type="Magento\Payment\Model\CcGenericConfigProvider">
         <arguments>
             <argument name="methodCodes" xsi:type="array">
-                <item name="conekta_card" xsi:type="const">Conekta\Model\Card::CODE</item>
+                <item name="conekta_card" xsi:type="const">Conekta\Payments\Model\Card::CODE</item>
             </argument>
         </arguments>
     </virtualType> 
@@ -26,7 +26,7 @@
     <type name="Magento\Checkout\Model\CompositeConfigProvider">
         <arguments>
             <argument name="configProviders" xsi:type="array">
-                <item name="conekta_card_config_provider" xsi:type="object">Conekta\Model\Ui\ConfigProvider</item>
+                <item name="conekta_card_config_provider" xsi:type="object">Conekta\Payments\Model\Ui\ConfigProvider</item>
             </argument>
         </arguments>
     </type>

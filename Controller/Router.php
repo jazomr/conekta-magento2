@@ -1,6 +1,6 @@
 <?php
 
-namespace Conekta\Controller;
+namespace Conekta\Payments\Controller;
 
 use Magento\Framework\App\RouterInterface;
 

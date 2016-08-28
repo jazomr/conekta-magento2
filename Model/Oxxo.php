@@ -1,6 +1,6 @@
 <?php
 
-namespace Conekta\Model;
+namespace Conekta\Payments\Model;
 
 use Magento\Framework\Model\Context;
 use Magento\Framework\Registry;
@@ -35,7 +35,7 @@ class Oxxo extends AbstractMethod {
     protected $_isSandbox = true;
     protected $_privateKey = null;
     
-    protected $_infoBlockType = 'Conekta\Block\Info\Custom';
+    protected $_infoBlockType = 'Conekta\Payments\Block\Info\Custom';
 
     /**
      * Availability option
@@ -70,8 +70,8 @@ class Oxxo extends AbstractMethod {
         
         $this->_scopeConfig = $scopeConfig;
 
-        if (!class_exists('\\Conekta\\Model\\Config')) {
-            throw new \Magento\Framework\Validator\Exception(__("Class Conekta\\Model\\Config not found."));
+        if (!class_exists('\\Conekta\\Payments\\Model\\Config')) {
+            throw new \Magento\Framework\Validator\Exception(__("Class Conekta\\Payments\\Model\\Config not found."));
         }
         
         $this->_isSandbox = (boolean)((integer)$this->_getConektaConfig('sandbox_mode'));
@@ -250,7 +250,7 @@ class Oxxo extends AbstractMethod {
     }
 
     private function _getConektaConfig($field) {
-        $path = 'payment/' . \Conekta\Model\Config::CODE . '/' . $field;
+        $path = 'payment/' . \Conekta\Payments\Model\Config::CODE . '/' . $field;
         return $this->_scopeConfig->getValue($path, ScopeInterface::SCOPE_STORE, parent::getStore());
     }
 

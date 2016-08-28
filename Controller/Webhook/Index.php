@@ -1,6 +1,6 @@
 <?php
 
-namespace Conekta\Controller\Webhook;
+namespace Conekta\Payments\Controller\Webhook;
 
 use Magento\Framework\App\Action\Action;
 use Magento\Sales\Model\Order;

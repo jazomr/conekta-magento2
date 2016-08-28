@@ -1,6 +1,6 @@
 <?php
 
-namespace Conekta\Model;
+namespace Conekta\Payments\Model;
 
 use Magento\Framework\Model\Context;
 use Magento\Framework\Registry;
@@ -68,8 +68,8 @@ class Card extends Cc
             $data
         );
 
-        if (!class_exists('\\Conekta\\Model\\Config')){
-            throw new \Magento\Framework\Validator\Exception(__("Class Conekta\\Model\\Config not found."));
+        if (!class_exists('\\Conekta\\Payments\\Model\\Config')){
+            throw new \Magento\Framework\Validator\Exception(__("Class Conekta\\Payments\\Model\\Config not found."));
         }
 
 
@@ -326,8 +326,7 @@ class Card extends Cc
             throw new \Magento\Framework\Validator\Exception(__('Payment refunding error.'));
         }
 
-        $payment
-        ->setTransactionId($transactionId . '-' . \Magento\Sales\Model\Order\Payment\Transaction::TYPE_REFUND)
+        $payment->setTransactionId($transactionId . '-' . \Magento\Sales\Model\Order\Payment\Transaction::TYPE_REFUND)
         ->setParentTransactionId($transactionId)
         ->setIsTransactionClosed(1)
         ->setShouldCloseParentTransaction(1);
@@ -455,7 +454,7 @@ class Card extends Cc
      * 
      */
     private function _getConektaConfig($field){
-        $path = 'payment/' . \Conekta\Model\Config::CODE . '/' . $field;
+        $path = 'payment/' . \Conekta\Payments\Model\Config::CODE . '/' . $field;
         return $this->_scopeConfig->getValue($path, \Magento\Store\Model\ScopeInterface::SCOPE_STORE, parent::getStore());
     }
 }

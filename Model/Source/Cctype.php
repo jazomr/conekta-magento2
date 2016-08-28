@@ -1,6 +1,6 @@
 <?php
 
-namespace Conekta\Model\Source;
+namespace Conekta\Payments\Model\Source;
 
 class Cctype extends \Magento\Payment\Model\Source\Cctype
 {

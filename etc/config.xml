@@ -4,7 +4,7 @@
         <payment>
             <!-- Conekta Config -->
             <conekta_config>
-                <model>Conekta\Model\Config</model>
+                <model>Conekta\Payments\Model\Config</model>
                 <!-- Setup API Key's -->
                 <test_private_api_key backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
                 <live_private_api_key backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
@@ -16,7 +16,7 @@
             <!-- Conekta Card -->
             <conekta_card>
                 <active>0</active>
-                <model>Conekta\Model\Card</model>
+                <model>Conekta\Payments\Model\Card</model>
                 <payment_action>authorize_capture</payment_action>
                 <title>Credit and Debit Cards</title>
                 <!-- Setup API Key's -->
@@ -41,7 +41,7 @@
                 <order_status>pending_payment</order_status>
                 <instructions>Instructions for OXXO payment.</instructions>
                 <payment_action>authorize</payment_action>
-                <model>Conekta\Model\Oxxo</model>
+                <model>Conekta\Payments\Model\Oxxo</model>
                 <group>offline</group>
             </conekta_oxxo>
             <!-- // Conekta OXXO // -->
