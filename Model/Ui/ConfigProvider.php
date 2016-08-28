@@ -4,7 +4,7 @@ namespace Conekta\Payments\Model\Ui;
 
 use Magento\Checkout\Model\ConfigProviderInterface;
 use Magento\Payment\Helper\Data as PaymentHelper;
-use Conekta\Card\Model\Payment as ConektaPayment;
+use Conekta\Payments\Model\Card as ConektaPayment;
 use Magento\Checkout\Model\Cart;
 
 class ConfigProvider implements ConfigProviderInterface 
