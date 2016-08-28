@@ -10,14 +10,16 @@ define(
         rendererList
     ) {
         'use strict';
-        
         rendererList.push(
+            {
+                type: 'conekta_card',
+                component: 'Conekta_Payments/js/view/payment/method-renderer/card-method'
+            },
             {
                 type: 'conekta_oxxo',
                 component: 'Conekta_Payments/js/view/payment/method-renderer/oxxo-method'
             }
         );
-
         /** Add view logic here if needed */
         return Component.extend({});
     }
