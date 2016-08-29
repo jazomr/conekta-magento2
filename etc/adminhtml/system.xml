@@ -174,6 +174,7 @@
                 </field>
             </group>
             <!-- // Conekta Banorte // -->
+            
             <!-- Conekta SPEI -->
             <group id="conekta_spei" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Conekta SPEI</label>
@@ -198,7 +199,7 @@
                     <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
                     <can_be_empty>1</can_be_empty>
                 </field>
-                <field id="banorte_instructions" translate="label" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="spei_instructions" translate="label" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Instructions</label>
                 </field>
                 <field id="sort_order" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="0">

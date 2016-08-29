@@ -63,7 +63,7 @@
                 <active>0</active>
                 <title>Transferencia SPEI</title>
                 <order_status>pending_payment</order_status>
-                <banorte_instructions>Instructions for SPEI payment.</banorte_instructions>
+                <spei_instructions>Instructions for SPEI payment.</spei_instructions>
                 <payment_action>authorize</payment_action>
                 <model>Conekta\Payments\Model\Spei</model>
                 <group>offline</group>
