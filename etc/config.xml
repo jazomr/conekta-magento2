@@ -37,7 +37,7 @@
             <!-- Conekta OXXO -->
             <conekta_oxxo>
                 <active>0</active>
-                <title>Conekta Oxxo</title>
+                <title>Tiendas Oxxo</title>
                 <order_status>pending_payment</order_status>
                 <oxxo_instructions>Instructions for OXXO payment.</oxxo_instructions>
                 <payment_action>authorize</payment_action>
@@ -49,7 +49,7 @@
             <!-- Conekta Banorte -->
             <conekta_banorte>
                 <active>0</active>
-                <title>Conekta Banorte</title>
+                <title>Déposito en Banorte</title>
                 <order_status>pending_payment</order_status>
                 <banorte_instructions>Instructions for Banorte payment.</banorte_instructions>
                 <payment_action>authorize</payment_action>
@@ -57,6 +57,18 @@
                 <group>offline</group>
             </conekta_banorte>
             <!-- // Conekta Banorte // -->
+            
+            <!-- Conekta SPEI -->
+            <conekta_spei>
+                <active>0</active>
+                <title>Transferencia SPEI</title>
+                <order_status>pending_payment</order_status>
+                <banorte_instructions>Instructions for SPEI payment.</banorte_instructions>
+                <payment_action>authorize</payment_action>
+                <model>Conekta\Payments\Model\Spei</model>
+                <group>offline</group>
+            </conekta_spei>
+            <!-- // Conekta SPEI // -->
         </payment>
     </default>
 </config>

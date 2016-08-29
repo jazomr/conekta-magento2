@@ -14,25 +14,25 @@ $instructions = $block->getInstructions();
     <dt class="title"><?php /* @noEscape */ echo $title; ?></dt>
     <dd class="content">
         <p><strong><?php echo __('Instructions:'); ?></strong><br><?php echo $instructions; ?></p>
-        <table class="data-table admin__table-secondary">
+        <table class="data">
             <tbody>
                 <?php 
                      switch ($type):
                         case "conekta_oxxo": ?>
                         <tr>
-                            <td colspan="2" align="center">
+                            <td>
                                 <img src="<?php echo $info["barcode_url"]; ?>" alt="Barcode Image" />
                             </td>
                         </tr>
                         <tr>
-                            <th><strong><?php echo __('Reference Number:'); ?></strong></th>
                             <td>
+                                <strong><?php echo __('Reference Number:'); ?></strong><br>
                                 <?php echo $info["barcode"]; ?>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                            <th><strong><?php echo __('Expires at:'); ?></strong></th>
+                                <strong><?php echo __('Expires at:'); ?></strong><br>
                                 <?php echo date("Y-m-d", (integer) $info["expires_at"]); ?>
                             </td>
                         </tr>
@@ -49,8 +49,19 @@ $instructions = $block->getInstructions();
                             <td><strong><?php echo __('Service Name:'); ?></strong><br><?php echo $info["service_name"]; ?></td>
                         </tr>
                         <tr>
-                            <th><strong><?php echo __('Expires at:'); ?></strong></th>
-                            <td><?php echo date("Y-m-d", (integer) $info["expires_at"]); ?></td>
+                            <td><strong><?php echo __('Expires at:'); ?></strong><br><?php echo date("Y-m-d", (integer) $info["expires_at"]); ?></td>
+                        </tr>
+                <?php
+                     break;
+                        case "conekta_spei": ?>
+                        <tr>
+                            <td><strong><?php echo __('CLABE:'); ?></strong><br><?php echo $info["clabe"]; ?></td>
+                        </tr>
+                        <tr>
+                            <td><strong><?php echo __('Bank Name:'); ?></strong><br><?php echo $info["bank_name"]; ?></td>
+                        </tr>
+                        <tr>
+                            <td><strong><?php echo __('Expires at:'); ?></strong><br><?php echo date("Y-m-d", (integer) $info["expires_at"]); ?></td>
                         </tr>
                 <?php
                      break;

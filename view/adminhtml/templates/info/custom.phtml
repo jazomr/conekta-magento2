@@ -55,6 +55,18 @@ $info = $data["data"];
                         </tr>
                 <?php
                      break;
+                        case "conekta_spei": ?>
+                        <tr>
+                            <td><strong><?php echo __('CLABE:'); ?></strong><br><?php echo $info["clabe"]; ?></td>
+                        </tr>
+                        <tr>
+                            <td><strong><?php echo __('Bank Name:'); ?></strong><br><?php echo $info["bank_name"]; ?></td>
+                        </tr>
+                        <tr>
+                            <td><strong><?php echo __('Expires at:'); ?></strong><br><?php echo date("Y-m-d", (integer) $info["expires_at"]); ?></td>
+                        </tr>
+                <?php
+                     break;
                     endswitch; ?>
             </tbody>
         </table>

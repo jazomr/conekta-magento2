@@ -47,7 +47,19 @@
                             <tr>
                                 <td><strong><?php echo __('Expires at:'); ?></strong><br><?php echo date("Y-m-d", (integer) $data["data"]["expires_at"]); ?></td>
                             </tr>
-                    <?php 
+                    <?php
+                        break;
+                            case "conekta_spei": ?>
+                            <tr>
+                                <td><strong><?php echo __('CLABE:'); ?></strong><br><?php echo $data["data"]["clabe"]; ?></td>
+                            </tr>
+                            <tr>
+                                <td><strong><?php echo __('Bank Name:'); ?></strong><br><?php echo $data["data"]["bank_name"]; ?></td>
+                            </tr>
+                            <tr>
+                                <td><strong><?php echo __('Expires at:'); ?></strong><br><?php echo date("Y-m-d", (integer) $data["data"]["expires_at"]); ?></td>
+                            </tr>
+                    <?php
                         break;
                         endswitch; ?>
                 </tbody>
