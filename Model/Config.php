@@ -32,7 +32,7 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
         $url_webhook = (string) $this->getConfigData("conekta_webhook");
 
         if (empty($url_webhook)) {
-            $url = new \Conekta\Model\Source\Webhook;
+            $url = new \Conekta\Payments\Model\Source\Webhook;
             $url_webhook = $url->getUrl();
             unset($url);
         }
