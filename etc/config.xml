@@ -39,12 +39,24 @@
                 <active>0</active>
                 <title>Conekta Oxxo</title>
                 <order_status>pending_payment</order_status>
-                <instructions>Instructions for OXXO payment.</instructions>
+                <oxxo_instructions>Instructions for OXXO payment.</oxxo_instructions>
                 <payment_action>authorize</payment_action>
                 <model>Conekta\Payments\Model\Oxxo</model>
                 <group>offline</group>
             </conekta_oxxo>
             <!-- // Conekta OXXO // -->
+            
+            <!-- Conekta Banorte -->
+            <conekta_banorte>
+                <active>0</active>
+                <title>Conekta Banorte</title>
+                <order_status>pending_payment</order_status>
+                <banorte_instructions>Instructions for Banorte payment.</banorte_instructions>
+                <payment_action>authorize</payment_action>
+                <model>Conekta\Payments\Model\Banorte</model>
+                <group>offline</group>
+            </conekta_banorte>
+            <!-- // Conekta Banorte // -->
         </payment>
     </default>
 </config>

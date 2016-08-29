@@ -1,4 +1,5 @@
 <?php /** @var $block \Conekta\Oxxo\Block\Success */ ?>
+
 <div class="checkout-success">
     <?php if ($block->getOrderId()):?>
         <?php if ($block->getCanViewOrder()): ?>
@@ -11,7 +12,7 @@
         <p><?php echo __('You ordered %1 items.', (int) $block->getOrder()->getTotalQtyOrdered()) ?></p>
         <!-- END VENDOR_MODULE CUSTOM -->
         
-        <?php if (in_array($block->getMethod(), ["conekta_oxxo"])): ?>
+        <?php if (in_array($block->getMethod(), ["conekta_oxxo"])): $data = $block->getOfflineInfo(); ?>
             <p>
                 <h5><?php echo __('Instructions:'); ?></h5>
                 <?php echo __($block->getInstructions()); ?>
@@ -19,15 +20,36 @@
 
             <table class="data">
                 <tbody>
-                    <tr>
-                        <td><img src="<?php echo $block->getBarcode()->barcode_url; ?>" alt="Barcode Image" /></td>
-                    </tr>
-                    <tr>
-                        <td><strong><?php echo __('Reference Number:'); ?></strong><br><?php echo $block->getBarcode()->barcode; ?></td>
-                    </tr>
-                    <tr>
-                        <td><strong><?php echo __('Expires at:'); ?></strong><br><?php echo date("Y-m-d", (integer) $block->getBarcode()->expires_at); ?></td>
-                    </tr>
+                    <?php 
+                        switch ($data["type"]):
+                            case "conekta_oxxo":  ?>
+                            <tr>
+                                <td><img src="<?php echo $data["data"]["barcode_url"]; ?>" alt="Barcode Image" /></td>
+                            </tr>
+                            <tr>
+                                <td><strong><?php echo __('Reference Number:'); ?></strong><br><?php echo $data["data"]["barcode"]; ?></td>
+                            </tr>
+                            <tr>
+                                <td><strong><?php echo __('Expires at:'); ?></strong><br><?php echo date("Y-m-d", (integer) $data["data"]["expires_at"]); ?></td>
+                            </tr>
+                    <?php  
+                        break; 
+                            case "conekta_banorte": ?>
+                            <tr>
+                                <td><strong><?php echo __('Reference Number:'); ?></strong><br><?php echo $data["data"]["reference"]; ?></td>
+                            </tr>
+                            <tr>
+                                <td><strong><?php echo __('Service Number:'); ?></strong><br><?php echo $data["data"]["service_number"]; ?></td>
+                            </tr>
+                            <tr>
+                                <td><strong><?php echo __('Service Name:'); ?></strong><br><?php echo $data["data"]["service_name"]; ?></td>
+                            </tr>
+                            <tr>
+                                <td><strong><?php echo __('Expires at:'); ?></strong><br><?php echo date("Y-m-d", (integer) $data["data"]["expires_at"]); ?></td>
+                            </tr>
+                    <?php 
+                        break;
+                        endswitch; ?>
                 </tbody>
             </table>
         <?php endif; ?>

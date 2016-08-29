@@ -4,7 +4,10 @@
  * @see \Magento\Payment\Block\Info
  */
 $title = $block->escapeHtml($block->getMethod()->getTitle());
-$barcode = $block->getBarcode();
+$data = $block->getOfflineInfo();
+
+$type = $data["type"];
+$info = $data["data"];
 ?>
 <dl class="payment-method">
     <dt class="title"><?php /* @noEscape */ echo $title; ?></dt>
@@ -12,23 +15,44 @@ $barcode = $block->getBarcode();
         <table class="data table">
             <caption class="table-caption"><?php /* @noEscape */ echo $title; ?></caption>
             <tobdy>
-                <tr>
-                    <td>
-                        <img src="<?php echo $barcode->barcode_url; ?>" alt="Barcode Image" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <?php echo __('Reference Number:'); ?> <br>
-                        <?php echo $barcode->barcode; ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <?php echo __('Expires at:'); ?> <br>
-                        <?php echo date("Y-m-d", (integer) $barcode->expires_at); ?>
-                    </td>
-                </tr>
+                <?php 
+                     switch ($type):
+                        case "conekta_oxxo": ?>
+                        <tr>
+                            <td>
+                                <img src="<?php echo $info["barcode_url"]; ?>" alt="Barcode Image" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <?php echo __('Reference Number:'); ?> <br>
+                                <?php echo $info["barcode"]; ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <?php echo __('Expires at:'); ?> <br>
+                                <?php echo date("Y-m-d", (integer) $info["expires_at"]); ?>
+                            </td>
+                        </tr>
+                <?php
+                     break;
+                        case "conekta_banorte": ?>
+                        <tr>
+                            <td><strong><?php echo __('Reference Number:'); ?></strong><br><?php echo $info["reference"]; ?></td>
+                        </tr>
+                        <tr>
+                            <td><strong><?php echo __('Service Number:'); ?></strong><br><?php echo $info["service_number"]; ?></td>
+                        </tr>
+                        <tr>
+                            <td><strong><?php echo __('Service Name:'); ?></strong><br><?php echo $info["service_name"]; ?></td>
+                        </tr>
+                        <tr>
+                            <td><strong><?php echo __('Expires at:'); ?></strong><br><?php echo date("Y-m-d", (integer) $info["expires_at"]); ?></td>
+                        </tr>
+                <?php
+                     break;
+                    endswitch; ?>
             </tobdy>
         </table>
     </dd>

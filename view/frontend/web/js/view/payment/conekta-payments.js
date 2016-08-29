@@ -18,6 +18,10 @@ define(
             {
                 type: 'conekta_oxxo',
                 component: 'Conekta_Payments/js/view/payment/method-renderer/oxxo-method'
+            },
+            {
+                type: 'conekta_banorte',
+                component: 'Conekta_Payments/js/view/payment/method-renderer/banorte-method'
             }
         );
         /** Add view logic here if needed */

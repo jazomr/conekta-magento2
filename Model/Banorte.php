@@ -6,10 +6,10 @@ use Conekta\Payments\Model\Offline;
 use Magento\Sales\Model\Order;
 
 /**
- * Pay In Oxxo Store payment method model
+ * Pay in Banorte payment method model
  */
 class Oxxo extends Offline {
-    const CODE = 'conekta_oxxo';
+    const CODE = 'conekta_banorte';
 
     public function __construct(
         Context $context, 
@@ -98,8 +98,8 @@ class Oxxo extends Offline {
             $chargeData = [
                 'currency' => (ctype_lower($order->getStoreCurrencyCode())) ? strtoupper($order->getStoreCurrencyCode()) : strtolower($order->getStoreCurrencyCode()),
                 'amount' => $total_amount,
-                'cash'=> [
-                    'type' => 'oxxo'
+                'bank'=> [
+                    'type' => 'banorte'
                 ],
                 'description' => 'Compra en Magento order #' . $order->getIncrementId(),
                 'reference_id' => $order->getIncrementId(),
@@ -164,8 +164,9 @@ class Oxxo extends Offline {
             $order->save();
             
             parent::setOfflineInfo($this->_code, [
-                "barcode" => $charge->payment_method->barcode,
-                "barcode_url" => $charge->payment_method->barcode_url,
+                "service_number" => $charge->payment_method->service_number,
+                "service_name" => $charge->payment_method->service_name,
+                "reference" => $charge->payment_method->reference,
                 "expires_at" => $charge->payment_method->expires_at
             ]);
         } catch(Exception $e) {

@@ -8,5 +8,9 @@
         <method name="conekta_card">
             <allow_multiple_address>1</allow_multiple_address>
         </method>
+        
+        <method name="conekta_banorte">
+            <allow_multiple_address>1</allow_multiple_address>
+        </method>
     </methods>
 </payment>

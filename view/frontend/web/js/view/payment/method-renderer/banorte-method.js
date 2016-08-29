@@ -9,10 +9,10 @@ define(
             
             return Component.extend({
                 defaults: {
-                    template: 'Conekta_Payments/payment/conekta-oxxo'
+                    template: 'Conekta_Payments/payment/conekta-banorte'
                 },
                 getCode: function () {
-                    return 'conekta_oxxo';
+                    return 'conekta_banorte';
                 },
                 isActive: function () {
                     return true;
