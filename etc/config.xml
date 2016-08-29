@@ -19,11 +19,6 @@
                 <model>Conekta\Payments\Model\Card</model>
                 <payment_action>authorize_capture</payment_action>
                 <title>Credit and Debit Cards</title>
-                <!-- Setup API Key's -->
-                <test_private_api_key backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
-                <live_private_api_key backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
-                <!-- // Setup API Key's // -->
-                <sandbox_mode>1</sandbox_mode>
                 <active_monthly_installments>1</active_monthly_installments>
                 <monthly_installments>3,6,9,12</monthly_installments>
                 <minimum_amount_monthly_installments>300</minimum_amount_monthly_installments>

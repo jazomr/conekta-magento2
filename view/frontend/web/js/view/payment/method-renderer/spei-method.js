@@ -7,8 +7,6 @@ define(
         function (Component) {
             'use strict';
             
-            alert("Si hay SPEI");
-            
             return Component.extend({
                 defaults: {
                     template: 'Conekta_Payments/payment/conekta-spei'
