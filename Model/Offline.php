@@ -106,17 +106,6 @@ class Offline extends AbstractMethod {
         return $this->_scopeConfig->getValue($path, ScopeInterface::SCOPE_STORE, parent::getStore());
     }
     
-    public function setOfflineInfo($type, $data) {
-        $this->getInfoInstance()->setAdditionalInformation("offline_info", [
-            "type" => $type,
-            "data" => $data
-        ]);
-    }
-    
-    public function getOfflineInfo(){
-        $this->getInfoInstance()->getAdditionalInformation("offline_info");
-    }
-    
     public function getInstructions(){
         $parts = explode("_", $this->_code);
         $method = $parts[1];

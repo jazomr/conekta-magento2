@@ -173,11 +173,14 @@ class Banorte extends Offline {
             
             $order->save();
             
-            parent::setOfflineInfo($this->_code, [
-                "service_number" => $charge->payment_method->service_number,
-                "service_name" => $charge->payment_method->service_name,
-                "reference" => $charge->payment_method->reference,
-                "expires_at" => $charge->payment_method->expires_at
+            $this->getInfoInstance()->setAdditionalInformation("offline_info", [
+                "type" => $this->_code,
+                "data" => [
+                    "service_number" => $charge->payment_method->service_number,
+                    "service_name" => $charge->payment_method->service_name,
+                    "reference" => $charge->payment_method->reference,
+                    "expires_at" => $charge->payment_method->expires_at
+                ]
             ]);
         } catch(Exception $e) {
             $this->debugData(['exception' => $e->getMessage() ]);

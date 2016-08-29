@@ -18,7 +18,8 @@ class Success extends CompleteCheckout
         return $this->getOrder()
              ->getPayment()
              ->getMethodInstance()
-             ->getOfflineInfo();
+             ->getInfoInstance()
+             ->getAdditionalInformation("offline_info");
     }
     
     public function getOrder(){

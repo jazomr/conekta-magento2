@@ -173,10 +173,13 @@ class Oxxo extends Offline {
             
             $order->save();
             
-            parent::setOfflineInfo($this->_code, [
-                "barcode" => $charge->payment_method->barcode,
-                "barcode_url" => $charge->payment_method->barcode_url,
-                "expires_at" => $charge->payment_method->expires_at
+            $this->getInfoInstance()->setAdditionalInformation("offline_info", [
+                "type" => $this->_code,
+                "data" => [
+                    "barcode" => $charge->payment_method->barcode,
+                    "barcode_url" => $charge->payment_method->barcode_url,
+                    "expires_at" => $charge->payment_method->expires_at
+                ]
             ]);
         } catch(Exception $e) {
             $this->debugData(['exception' => $e->getMessage() ]);

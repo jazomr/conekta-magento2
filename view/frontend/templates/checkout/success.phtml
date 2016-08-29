@@ -12,7 +12,7 @@
         <p><?php echo __('You ordered %1 items.', (int) $block->getOrder()->getTotalQtyOrdered()) ?></p>
         <!-- END VENDOR_MODULE CUSTOM -->
         
-        <?php if (in_array($block->getMethod(), ["conekta_oxxo"])): $data = $block->getOfflineInfo(); ?>
+        <?php if (in_array($block->getMethod(), ["conekta_oxxo", "conekta_banorte"])): $data = $block->getOfflineInfo(); ?>
             <p>
                 <h5><?php echo __('Instructions:'); ?></h5>
                 <?php echo __($block->getInstructions()); ?>
