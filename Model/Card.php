@@ -280,6 +280,8 @@ class Card extends Cc
 
                 if ($monthly_installments > 1) {
                     $chargeData['monthly_installments'] = $monthly_installments;
+                    $order->addStatusHistoryComment("Monthly installments select " . $chargeData['monthly_installments'] . ' months');
+                    $order->save();
                 }
             }
             
