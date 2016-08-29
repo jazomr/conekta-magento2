@@ -439,8 +439,13 @@ class Card extends Cc
     private function _validateMonthlyInstallments($totalOrder, $installments){
         if ($totalOrder >= $this->getMinimumAmountMonthlyInstallment()){
             switch ($installments) {
-                case 6: case 9: case 12: default:
+                case 6: case 9: case 12:
                     if ($totalOrder > 400) {
+                        return true;
+                    }
+                    break;
+                case 3:
+                    if ($totalOrder > 300) {
                         return true;
                     }
                     break;

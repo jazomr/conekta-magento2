@@ -130,7 +130,7 @@ define(
                                   return false;
                                 }
                                 break;
-                            case 6: case 9: case 12: default:
+                            case 6: case 9: case 12:
                                 if (totalOrder < 400) {
                                     return false;
                                 }
