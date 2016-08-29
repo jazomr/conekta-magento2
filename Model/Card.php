@@ -65,13 +65,11 @@ class Card extends Cc
             $localeDate,
             null,
             null,
-            $data
-        );
+            $data);
 
         if (!class_exists('\\Conekta\\Payments\\Model\\Config')){
             throw new \Magento\Framework\Validator\Exception(__("Class Conekta\\Payments\\Model\\Config not found."));
         }
-
 
         $this->_scopeConfig = $scopeConfig;
         $this->_countryFactory = $countryFactory;
@@ -80,7 +78,7 @@ class Card extends Cc
 
         $this->_typesCards = $this->getConfigData('cctypes');
 
-        $this->_activeMonthlyInstallments = (boolean) $this->getConfigData('active_monthly_installments');
+        $this->_activeMonthlyInstallments = (boolean) ((integer) $this->getConfigData('active_monthly_installments'));
 
         if ($this->_activeMonthlyInstallments) {
             $this->_monthlyInstallments = $this->getConfigData('monthly_installments');
