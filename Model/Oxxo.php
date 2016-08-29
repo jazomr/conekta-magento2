@@ -4,6 +4,15 @@ namespace Conekta\Payments\Model;
 
 use Conekta\Payments\Model\Offline;
 use Magento\Sales\Model\Order;
+use Magento\Framework\Model\Context;
+use Magento\Framework\Registry;
+use Magento\Framework\Api\ExtensionAttributesFactory;
+use Magento\Framework\Api\AttributeValueFactory;
+use Magento\Payment\Helper\Data;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Payment\Model\Method\Logger;
+use Magento\Framework\Model\ResourceModel\AbstractResource;
+use Magento\Framework\Data\Collection\AbstractDb;
 
 /**
  * Pay In Oxxo Store payment method model
