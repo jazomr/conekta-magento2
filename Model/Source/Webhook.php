@@ -6,7 +6,7 @@ use Magento\Framework\App\ObjectManager;
 
 class Webhook
 {
-    public function getUrl(){
+    public static function getUrl(){
         $baseUrl = ObjectManager::getInstance()
                     ->get('\Magento\Store\Model\StoreManagerInterface')
                     ->getStore()

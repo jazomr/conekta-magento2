@@ -32,9 +32,7 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
         $url_webhook = (string) $this->getConfigData("conekta_webhook");
 
         if (empty($url_webhook)) {
-            $url = new \Conekta\Payments\Model\Source\Webhook;
-            $url_webhook = $url->getUrl();
-            unset($url);
+            $url_webhook = \Conekta\Payments\Model\Source\Webhook::getUrl();
         }
 
         $events = ["events" => ["charge.paid"]];
@@ -63,7 +61,7 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
 
                 $webhook = Webhook::create(array_merge(["url" => $url_webhook], $mode, $events));
             } else {
-                throw new \Magento\Framework\Validator\Exception(__('Webhook was already registered in Conekta!'));
+                throw new \Magento\Framework\Validator\Exception(__('Webhook was already registered in Conekta!<br>URL: ' . $url_webhook));
             }
         } catch (Error $e) {
             $error_message = $e->getMessage();
