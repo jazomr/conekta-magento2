@@ -17,7 +17,7 @@ use Magento\Framework\Data\Collection\AbstractDb;
 /**
  * Pay in Banorte payment method model
  */
-class Oxxo extends Offline {
+class Banorte extends Offline {
     const CODE = 'conekta_banorte';
     protected $_code = self::CODE;
     
