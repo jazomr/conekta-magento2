@@ -19,7 +19,8 @@ use Magento\Framework\Data\Collection\AbstractDb;
  */
 class Oxxo extends Offline {
     const CODE = 'conekta_banorte';
-
+    protected $_code = self::CODE;
+    
     public function __construct(
         Context $context, 
         Registry $registry, 

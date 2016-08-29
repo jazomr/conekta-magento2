@@ -7,7 +7,6 @@ use Conekta\Webhook;
 use Conekta\Error;
 
 class Config extends \Magento\Payment\Model\Method\AbstractMethod {
-
     const CODE = 'conekta_config';
 
     protected $_code = self::CODE;

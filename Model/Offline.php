@@ -20,7 +20,7 @@ class Offline extends AbstractMethod {
      *
      * @var string
      */
-    protected $_code = self::CODE;
+    
     protected $_countryFactory;
     protected $_minAmount = null;
     protected $_maxAmount = null;
