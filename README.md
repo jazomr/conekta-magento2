@@ -7,18 +7,22 @@ Installation
 -----------
 
 1. First add this repository in your composer config
+
     ```bash
-        composer config repositories.conekta git https://github.com/conekta/conekta-magento2.git
+    composer config repositories.conekta git https://github.com/conekta/conekta-magento2.git
     ```
 2. Add the dependency
+
     ```bash
-        composer require conekta/magento2-module dev-master
+    composer require conekta/magento2-module dev-master
     ```
 3. Update your Magento
+
     ```bash
-        php bin/magento setup:upgrade
+    php bin/magento setup:upgrade
     ```
 4. Compile your XML files
+
     ```bash
-        php bin/magento setup:di:compile
+    php bin/magento setup:di:compile
     ```
