@@ -3,7 +3,7 @@
     <system>
         <section id="payment" translate="label">
             <!-- Conekta Config -->
-            <group id="conekta_config" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="conekta_config" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Conekta Configuration</label>
                 <comment>
                     <![CDATA[<a href="https://conekta.io/" target="_blank">Click here to sign up for Conekta account</a>]]>
@@ -38,7 +38,7 @@
             <!-- // Conekta Config // -->
 
             <!-- Conekta Card -->
-            <group id="conekta_card" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="conekta_card" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Conekta Card</label>
                 <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Enabled</label>
@@ -94,7 +94,7 @@
             <!-- // Conekta Card // -->
 
             <!-- Conekta OXXO -->
-            <group id="conekta_oxxo" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="conekta_oxxo" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Conekta Oxxo</label>
                 <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Enabled</label>
@@ -135,7 +135,7 @@
             <!-- // Conekta OXXO // -->
 
             <!-- Conekta Banorte -->
-            <group id="conekta_banorte" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="conekta_banorte" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Conekta Banorte</label>
                 <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Enabled</label>
@@ -176,7 +176,7 @@
             <!-- // Conekta Banorte // -->
             
             <!-- Conekta SPEI -->
-            <group id="conekta_spei" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="conekta_spei" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Conekta SPEI</label>
                 <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Enabled</label>

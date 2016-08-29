@@ -66,7 +66,10 @@ class Card extends Cc
             null,
             null,
             $data);
-
+        
+        echo "Si llega al constructor";
+        die();
+        
         if (!class_exists('\\Conekta\\Payments\\Model\\Config')){
             throw new \Magento\Framework\Validator\Exception(__("Class Conekta\\Payments\\Model\\Config not found."));
         }
