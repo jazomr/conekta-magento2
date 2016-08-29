@@ -167,11 +167,12 @@ class Spei extends Offline {
             }
             
             $order->setState(Order::STATE_PENDING_PAYMENT);
+            $order->setStatus(Order::STATE_PENDING_PAYMENT);
             $order->setExtOrderId($charge->id);
-            $order->setTransactionId($charge->id);
             $order->setIsTransactionClosed(0);
-            
             $order->save();
+            
+            $payment->setTransactionId($charge->id);
             
             $this->getInfoInstance()->setAdditionalInformation("offline_info", [
                 "type" => $this->_code,

@@ -25,7 +25,6 @@
                 <cctypes>AE,VI,MC</cctypes>
                 <allowspecific>0</allowspecific>
                 <min_order_total>0.50</min_order_total>
-                <sort_order>1</sort_order>
             </conekta_card>
             <!-- // Conekta Card // -->
 

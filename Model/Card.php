@@ -66,7 +66,7 @@ class Card extends Cc
             null,
             null,
             $data);
-
+        
         if (!class_exists('\\Conekta\\Payments\\Model\\Config')){
             throw new \Magento\Framework\Validator\Exception(__("Class Conekta\\Payments\\Model\\Config not found."));
         }
@@ -215,7 +215,7 @@ class Card extends Cc
                 'type' => $item->getProductType()
             ];
         }
-
+        
         try {
             $total_amount = intval(((float) $amount) * 100);
             $chargeData = [
@@ -273,18 +273,20 @@ class Card extends Cc
 
             if ($this->isActiveMonthlyInstallments()){
                 $monthly_installments = (integer) $this->getInfoInstance()->getAdditionalInformation('monthly_installments');
-                
                 if (!$this->_validateMonthlyInstallments($total_amount, $monthly_installments)) {
                     $this->_logger->error(__('[Conekta]: installments: ' .  $monthly_installments . ' Amount: ' . $total_amount));
                     throw new \Magento\Framework\Validator\Exception(__('Problem with monthly installments.'));
                 }
-            }
 
-            if ($monthly_installments > 1) {
-                $chargeData['monthly_installments'] = $monthly_installments;
+                if ($monthly_installments > 1) {
+                    $chargeData['monthly_installments'] = $monthly_installments;
+                    $order->addStatusHistoryComment("Monthly installments select " . $chargeData['monthly_installments'] . ' months');
+                    $order->save();
+                }
             }
-
+            
             $charge = \Conekta\Charge::create($chargeData);
+
             $payment->setTransactionId($charge->id)->setIsTransactionClosed(0);
         } catch(Exception $e) {
             $this->debugData(['request' => $requestData, 'exception' => $e->getMessage() ]);
