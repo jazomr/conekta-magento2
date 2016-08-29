@@ -56,7 +56,7 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
         } catch (Error $e) {
             $error_message = $e->getMessage();
             $this->_logger->error(__('[Conekta]: Webhook error, Message: ' . $error_message . ' URL: ' . $url_webhook));
-            throw new \Magento\Framework\Validator\Exception(__('Webhook not register.'));
+            throw new \Magento\Framework\Validator\Exception(__('Can not register this webhook ' . $url_webhook . '<br>' . 'Message: ' . (string) $error_message));
         }   
     }
 }
