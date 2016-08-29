@@ -62,6 +62,8 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
                 }
 
                 $webhook = Webhook::create(array_merge(["url" => $url_webhook], $mode, $events));
+            } else {
+                throw new \Magento\Framework\Validator\Exception(__('Webhook was already registered in Conekta!'));
             }
         } catch (Error $e) {
             $error_message = $e->getMessage();
