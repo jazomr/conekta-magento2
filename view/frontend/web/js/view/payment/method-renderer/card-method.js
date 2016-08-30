@@ -125,6 +125,9 @@ define(
                     if (totalOrder >= this.getMinimumAmountMonthlyInstallments()) {
                         var installments = parseInt($('#conekta_monthly_installments').val());
                         switch (installments) {
+                            case 1:
+                                return true;
+                                break;
                             case 3:
                                 if (totalOrder < 300) {
                                   return false;

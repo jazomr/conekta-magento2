@@ -449,6 +449,12 @@ class Card extends Cc
                         return true;
                     }
                     break;
+                case 1:
+                    return true;
+                    break;
+                default:
+                    return false;
+                    break;
             }
             return false;
         }
