@@ -27,7 +27,7 @@ Installation
     php bin/magento setup:di:compile
     ```
     
-Installation
+Updates
 -----------
 
 For update plugin run the next bash
