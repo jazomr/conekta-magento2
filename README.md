@@ -26,3 +26,11 @@ Installation
     ```bash
     php bin/magento setup:di:compile
     ```
+    
+Installation
+-----------
+
+For update plugin run the next bash
+    ```bash
+        composer update conekta/magento2-module
+    ```
