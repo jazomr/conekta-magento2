@@ -30,7 +30,8 @@ Installation
 Updates
 -----------
 
-For update plugin run the next bash
+For update this plugin execute the next command
+
     ```bash
         composer update conekta/magento2-module
     ```
