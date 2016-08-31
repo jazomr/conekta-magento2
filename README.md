@@ -32,6 +32,6 @@ Updates
 
 For update this plugin execute the next command
 
-    ```bash
-    composer update conekta/magento2-module
-    ```
+```bash
+composer update conekta/magento2-module
+```
