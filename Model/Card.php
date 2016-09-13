@@ -271,8 +271,11 @@ class Card extends Cc
                 ]
             ];
 
-            if ($this->isActiveMonthlyInstallments()){
-                $monthly_installments = (integer) $this->getInfoInstance()->getAdditionalInformation('monthly_installments');
+            $tmp_monthly_installments = $this->getInfoInstance()->getAdditionalInformation('monthly_installments');
+
+            if ($this->isActiveMonthlyInstallments() && NULL !== $tmp_monthly_installments){
+                $monthly_installments = (integer) $tmp_monthly_installments;
+                unset($tmp_monthly_installments);
                 if (!$this->_validateMonthlyInstallments($total_amount, $monthly_installments)) {
                     $this->_logger->error(__('[Conekta]: installments: ' .  $monthly_installments . ' Amount: ' . $total_amount));
                     throw new \Magento\Framework\Validator\Exception(__('Problem with monthly installments.'));
