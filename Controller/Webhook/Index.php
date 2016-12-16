@@ -11,7 +11,7 @@ class Index extends Action
         $body = @file_get_contents('php://input');
         $event = json_decode($body);
         
-        $charge = $event->object;
+        $charge = $event->data->object;
         $order = $this->_objectManager->create('Magento\Sales\Model\Order');
         
         if ($charge->status === "paid"){
