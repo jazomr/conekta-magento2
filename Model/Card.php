@@ -175,6 +175,7 @@ class Card extends Cc
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $customer = $objectManager->get('Magento\Customer\Model\Session');
 
+        $shipping_data = $order->getShippingAddress()->getData();
         $shipp = [];
         if (empty($shipping_data) !== true) {
             $shipp = [
@@ -188,7 +189,7 @@ class Card extends Cc
                     'country' => $shipping_data['country_id'],
                     'zip' => $shipping_data['postcode'],
                     'phone' => $shipping_data['telephone'],
-                    'email' => $email
+                    'email' => $order->getCustomerEmail()
                     ]
                 ];
         }
