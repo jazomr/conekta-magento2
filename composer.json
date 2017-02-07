@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "minimum-stability": "stable",
     "require": {
-        "sairoko12/conekta-php-namespaces": "1.0.0"
+        "conekta/conekta-php": "3.1.0"
     },
     "authors": [
         {
