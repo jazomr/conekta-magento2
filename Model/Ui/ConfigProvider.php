@@ -148,7 +148,7 @@ class ConfigProvider implements ConfigProviderInterface
     {
         $years = [];
         $cYear = (integer) date("Y");
-
+        $cYear = $cYear - 1;
         for($i=1; $i <= 8; $i++) {
             $year = (string) ($cYear + $i);
             $years[$year] = $year;

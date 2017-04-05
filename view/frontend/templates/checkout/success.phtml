@@ -12,7 +12,7 @@
         <p><?php echo __('You ordered %1 items.', (int) $block->getOrder()->getTotalQtyOrdered()) ?></p>
         <!-- END VENDOR_MODULE CUSTOM -->
         
-        <?php if (in_array($block->getMethod(), ["conekta_oxxo", "conekta_banorte", "conekta_spei"])): $data = $block->getOfflineInfo(); ?>
+        <?php if (in_array($block->getMethod(), ["conekta_oxxo", "conekta_spei"])): $data = $block->getOfflineInfo(); ?>
             <p>
                 <h5><?php echo __('Instructions:'); ?></h5>
                 <?php echo __($block->getInstructions()); ?>
@@ -28,21 +28,6 @@
                             </tr>
                             <tr>
                                 <td><strong><?php echo __('Reference Number:'); ?></strong><br><?php echo $data["data"]["barcode"]; ?></td>
-                            </tr>
-                            <tr>
-                                <td><strong><?php echo __('Expires at:'); ?></strong><br><?php echo date("Y-m-d", (integer) $data["data"]["expires_at"]); ?></td>
-                            </tr>
-                    <?php  
-                        break; 
-                            case "conekta_banorte": ?>
-                            <tr>
-                                <td><strong><?php echo __('Reference Number:'); ?></strong><br><?php echo $data["data"]["reference"]; ?></td>
-                            </tr>
-                            <tr>
-                                <td><strong><?php echo __('Service Number:'); ?></strong><br><?php echo $data["data"]["service_number"]; ?></td>
-                            </tr>
-                            <tr>
-                                <td><strong><?php echo __('Service Name:'); ?></strong><br><?php echo $data["data"]["service_name"]; ?></td>
                             </tr>
                             <tr>
                                 <td><strong><?php echo __('Expires at:'); ?></strong><br><?php echo date("Y-m-d", (integer) $data["data"]["expires_at"]); ?></td>
