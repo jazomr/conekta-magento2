@@ -2,7 +2,7 @@
     "name": "conekta/magento2-module",
     "description": "Conekta rules!",
     "type": "magento2-module",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "minimum-stability": "stable",
     "require": {
         "conekta/conekta-php": "3.1.0"
