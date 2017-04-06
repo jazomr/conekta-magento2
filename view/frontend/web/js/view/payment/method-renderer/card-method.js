@@ -32,7 +32,7 @@ define(
 
                     if (!this.validateMonthlyInstallments()) {
                         self.messageContainer.addErrorMessage({
-                            message: "The amount require for monthly installments is not valid."
+                            message: "The amount required for monthly installments is not valid."
                         });
                     }
 
@@ -125,27 +125,17 @@ define(
                     var totalOrder = this.getTotal();
                     if (totalOrder >= this.getMinimumAmountMonthlyInstallments()) {
                         var installments = parseInt($('#conekta_monthly_installments').val());
-                        switch (installments) {
-                            case 1:
-                                return true;
-                                break;
-                            case 3:
-                                if (totalOrder < 300) {
-                                  return false;
-                                }
-                                break;
-                            case 6: case 9: case 12:
-                                if (totalOrder < 400) {
-                                    return false;
-                                }
-                                
-                                break;
+                        if (installments == 1) {
+
+                            return true;
+                        } else {
+
+                            return (installments * 100 < totalOrder);
                         }
+                    } else {
 
-                        return true;
+                        return false;
                     }
-
-                    return false;
                 }
 
                 return true;
