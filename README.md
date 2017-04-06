@@ -33,6 +33,8 @@ Updates
 For update this plugin execute the next command
 
 ```bash
+php bin/magento setup:upgrade # version bump
+php bin/magento setup:di:compile # version bump
 composer update conekta/magento2-module
 ```
 
