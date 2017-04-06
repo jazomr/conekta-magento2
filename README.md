@@ -1,7 +1,7 @@
 ![alt tag](https://raw.github.com/conekta/conekta-magento/master/readme_files/cover.png)
 
-Magento 2 Plugin (beta)
-=======================
+Magento 2 Plugin v.1.1.5
+========================
 
 Installation
 -----------
@@ -35,3 +35,7 @@ For update this plugin execute the next command
 ```bash
 composer update conekta/magento2-module
 ```
+
+Magento Version Compatibility
+-----------------------------
+The plugin has been tested in Magento 2.0.7. Support is not guaranteed for untested versions.

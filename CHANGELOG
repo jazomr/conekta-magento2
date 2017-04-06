@@ -1,0 +1,6 @@
+=== 1.0.0 2016-08-31
+* Beta version with all payment methods.
+=== 1.1.0 2016-04-06
+* Major refactor.
+* Remove/Deprecate Banorte PM.
+* Fix PCI issue.
