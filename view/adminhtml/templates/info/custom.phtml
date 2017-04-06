@@ -36,25 +36,6 @@ $info = $data["data"];
                         </tr>
                 <?php
                      break;
-                        case "conekta_banorte": ?>
-                        <tr>
-                            <th><strong><?php echo __('Reference Number:'); ?></strong></th>
-                            <td><?php echo $info["reference"]; ?></td>
-                        </tr>
-                        <tr>
-                            <th><strong><?php echo __('Service Number:'); ?></strong></th>
-                            <td><?php echo $info["service_number"]; ?></td>
-                        </tr>
-                        <tr>
-                            <th><strong><?php echo __('Service Name:'); ?></strong></th>
-                            <td><?php echo $info["service_name"]; ?></td>
-                        </tr>
-                        <tr>
-                            <th><strong><?php echo __('Expires at:'); ?></strong></th>
-                            <td><?php echo date("Y-m-d", (integer) $info["expires_at"]); ?></td>
-                        </tr>
-                <?php
-                     break;
                         case "conekta_spei": ?>
                         <tr>
                             <th><strong><?php echo __('CLABE:'); ?></strong></th>

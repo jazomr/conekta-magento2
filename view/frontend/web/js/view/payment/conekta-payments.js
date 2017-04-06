@@ -20,10 +20,6 @@ define(
                 component: 'Conekta_Payments/js/view/payment/method-renderer/oxxo-method'
             },
             {
-                type: 'conekta_banorte',
-                component: 'Conekta_Payments/js/view/payment/method-renderer/banorte-method'
-            },
-            {
                 type: 'conekta_spei',
                 component: 'Conekta_Payments/js/view/payment/method-renderer/spei-method'
             }

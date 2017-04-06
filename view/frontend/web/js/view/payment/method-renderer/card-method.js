@@ -62,14 +62,15 @@ define(
                 }
             },
             getData: function () {
+                var number = this.creditCardNumber().replace(/\D/g,'');
                 var data = {
                     'method': this.getCode(),
                     'additional_data': {
-                        'cc_cid': this.creditCardVerificationNumber(),
                         'cc_type': this.creditCardType(),
                         'cc_exp_year': this.creditCardExpYear(),
                         'cc_exp_month': this.creditCardExpMonth(),
-                        'cc_number': this.creditCardNumber(),
+                        'cc_bin': number.substring(0, 6),
+                        'cc_last_4': number.substring(number.length-4, number.length),
                         'card_token': $("#card_token").val()
                     }
                 };
