@@ -197,18 +197,14 @@ class Card extends Cc
 
         $monthlyInstallments = $info->getAdditionalInformation('monthly_installments');
 
-        $chargeData['monthly_installments'] = $monthlyInstallments;
-
         if ($this->isActiveMonthlyInstallments() && $monthlyInstallments) {
-            if (!$this->_validateMonthlyInstallments($totalAmount, $monthlyInstallments)) {
-                $this->_logger->error(__('[Conekta]: installments: ' .  $monthlyInstallments . ' Amount: ' . $totalAmount));
-                throw new \Magento\Framework\Validator\Exception(__('Problem with monthly installments.'));
-            }
-        
-            if (intval($monthlyInstallments) > 1) {
+            if ($this->_validateMonthlyInstallments($totalAmount, $monthlyInstallments)) {
                 $chargeData['monthly_installments'] = $monthlyInstallments;
                 $order->addStatusHistoryComment("Monthly installments select " . $chargeData['monthly_installments'] . ' months');
                 $order->save();
+            } else {
+                $this->_logger->error(__('[Conekta]: installments: ' .  $monthlyInstallments . ' Amount: ' . $totalAmount));
+                throw new \Magento\Framework\Validator\Exception(__('Problem with monthly installments.'));
             }
         }
         
