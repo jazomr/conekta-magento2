@@ -288,8 +288,9 @@ class Card extends Cc
      * @return array
      */
 
-    public function getShipment($shippingAddress)
+    public function getShipment($order)
     {
+        $shippingAddress = $order->getShippingAddress();
         $shippingAddressArray = [];
         if ($shippingAddress) {
             $shippingData = $shippingAddress->getData();
@@ -360,7 +361,7 @@ class Card extends Cc
                 'email' => $order->getCustomerEmail()
             ],
             'line_items' => self::getLineItems($order),
-            'shipment' => self::getShipment($order->getShippingAddress())
+            'shipment' => self::getShipment($order)
         ];
 
         return $details;
