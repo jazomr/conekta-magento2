@@ -79,9 +79,10 @@ class Oxxo extends Offline {
         try {       
             $charge = \Conekta\Charge::create($chargeData);
         } catch(\Exception $e) {
-            $this->debugData(['request' => $requestData, 'exception' => $e->getMessage() ]);
+            $this->debugData(['request' => $chargeData, 'exception' => $e->getMessage() ]);
             $this->_logger->error(__('[Conekta]: Payment capturing error.'));
-            throw new Magento\Framework\Validator\Exception(__('Payment capturing error.'));
+            throw $e;
+            // throw new Magento\Framework\Validator\Exception(__('Payment capturing error.'));
         }
 
         $order->setState(Order::STATE_PENDING_PAYMENT);

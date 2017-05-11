@@ -213,9 +213,10 @@ class Card extends Cc
 
             $payment->setTransactionId($charge->id)->setIsTransactionClosed(0);
         } catch(\Exception $e) {
-            $this->debugData(['exception' => $e->getMessage() ]);
+            $this->debugData(['request' => $chargeData, 'exception' => $e->getMessage() ]);
             $this->_logger->error(__('[Conekta]: Payment capturing error.'));
-            throw new Magento\Framework\Validator\Exception(__('Payment capturing error.'));
+            throw $e;
+            // throw new Magento\Framework\Validator\Exception(__('Payment capturing error.'));
         }
 
         return $this;
