@@ -121,12 +121,11 @@ define(
             },
 
             validateMonthlyInstallments: function() {
-                if(this.activeMonthlyInstallments()) {
+                if(this.activeMonthlyInstallments() && isNaN(installments) == false) {
                     var totalOrder = this.getTotal();
                     if (totalOrder >= this.getMinimumAmountMonthlyInstallments()) {
                         var installments = parseInt($('#conekta_monthly_installments').val());
                         if (installments == 1) {
-
                             return true;
                         } else {
 
