@@ -197,24 +197,25 @@ class Card extends Cc
 
         $monthlyInstallments = $info->getAdditionalInformation('monthly_installments');
 
-        if ($this->isActiveMonthlyInstallments() && $monthlyInstallments) {
-            if ($this->_validateMonthlyInstallments($totalAmount, $monthlyInstallments)) {
-                $chargeData['monthly_installments'] = $monthlyInstallments;
-                $order->addStatusHistoryComment("Monthly installments select " . $chargeData['monthly_installments'] . ' months');
-                $order->save();
-            } else {
-                $this->_logger->error(__('[Conekta]: installments: ' .  $monthlyInstallments . ' Amount: ' . $totalAmount));
-                throw new \Magento\Framework\Validator\Exception(__('Problem with monthly installments.'));
+        try {
+            
+            if ($this->isActiveMonthlyInstallments() && intval($monthlyInstallments) > 1) {
+                if ($this->_validateMonthlyInstallments($totalAmount, $monthlyInstallments)) {
+                    $chargeData['monthly_installments'] = $monthlyInstallments;
+                    $order->addStatusHistoryComment("Monthly installments select " . $chargeData['monthly_installments'] . ' months');
+                    $order->save();
+                } else {
+                    $this->_logger->error(__('[Conekta]: installments: ' .  $monthlyInstallments . ' Amount: ' . $totalAmount));
+                    throw new \Magento\Framework\Validator\Exception(__('Problem with monthly installments.'));
+                }
             }
-        }
-        
-        try {       
+
             $charge = \Conekta\Charge::create($chargeData);
 
             $payment->setTransactionId($charge->id)->setIsTransactionClosed(0);
         } catch(\Exception $e) {
             $this->debugData(['request' => $chargeData, 'exception' => $e->getMessage() ]);
-            $this->_logger->error(__('[Conekta]: Payment capturing error.'));
+            $this->_logger->error(__('[Conekta]: Payment capturing error. ' . $e->getMessage()));
             throw $e;
             // throw new Magento\Framework\Validator\Exception(__('Payment capturing error.'));
         }
