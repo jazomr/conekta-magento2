@@ -216,8 +216,7 @@ class Card extends Cc
         } catch(\Exception $e) {
             $this->debugData(['request' => $chargeData, 'exception' => $e->getMessage() ]);
             $this->_logger->error(__('[Conekta]: Payment capturing error. ' . $e->getMessage()));
-            throw $e;
-            // throw new Magento\Framework\Validator\Exception(__('Payment capturing error.'));
+            throw new \Magento\Framework\Validator\Exception(__($e->getMessage()));
         }
 
         return $this;
