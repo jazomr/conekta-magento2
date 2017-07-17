@@ -71,13 +71,13 @@ class Oxxo extends Offline
         ];
 
         $days = $this->getConfigData("expiry_days");
-        $charge_expiration = strtotime("+" . $days . " days");
-        $charge_params = Config::getChargeOxxo($totalAmount, $charge_expiration);
+        $chargeExpiration = strtotime("+" . $days . " days");
+        $chargeParams = Config::getChargeOxxo($totalAmount, $chargeExpiration);
 
         try {
             $orderData = Config::checkBalance($orderData, $totalAmount);
             $conektaOrder = \Conekta\Order::create($orderData);
-            $charge = $conektaOrder->createCharge($charge_params);
+            $charge = $conektaOrder->createCharge($chargeParams);
         } catch (\Exception $e) {
             $this->_logger->error(__('[Conekta]: Payment capturing error.'));
             throw new Exception(__($e->getMessage()));
