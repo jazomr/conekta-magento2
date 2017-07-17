@@ -20,21 +20,18 @@ use Magento\Store\Api\Data\StoreInterface;
 class Card extends Cc
 {
     const CODE = 'conekta_card';
-
     protected $_code = self::CODE;
     protected $_isGateway                   = true;
     protected $_canCapture                  = true;
     protected $_canCapturePartial           = true;
     protected $_canRefund                   = true;
     protected $_canRefundInvoicePartial     = true;
-
     protected $_countryFactory;
     protected $_minAmount = null;
     protected $_maxAmount = null;
     protected $_supportedCurrencyCodes = ["USD", "MXN"];
     protected $_debugReplacePrivateDataKeys = ['number', 'exp_month', 'exp_year', 'cvc'];
     protected $_scopeConfig;
-
     protected $_isSandbox = true;
     protected $_privateKey = null;
     protected $_publicKey = null;
@@ -42,8 +39,6 @@ class Card extends Cc
     protected $_activeMonthlyInstallments;
     protected $_minAmountMonthInstallments;
     protected $_typesCards;
-
-
 
     public function __construct(
         Context $context,
@@ -57,7 +52,6 @@ class Card extends Cc
         TimezoneInterface $localeDate,
         CountryFactory $countryFactory,
         array $data = array()
-
     ) {
         parent::__construct(
             $context,
@@ -72,7 +66,6 @@ class Card extends Cc
             null,
             null,
             $data
-
         );
 
         if (!class_exists('\\Conekta\\Payments\\Model\\Config')){
@@ -91,7 +84,6 @@ class Card extends Cc
 
         //TODO: log this var to better validation
         $this->_activeMonthlyInstallments =
-            (boolean)
             ((integer) $this->getConfigData(
                 'active_monthly_installments'
             ));
@@ -106,8 +98,6 @@ class Card extends Cc
                 (float) $this->getConfigData(
                     'minimum_amount_monthly_installments'
                 );
-
-
             if (empty($this->_minAmountMonthInstallments)
                 || $this->_minAmountMonthInstallments <= 0){
 
@@ -141,7 +131,6 @@ class Card extends Cc
             );
         }
 
-
         if (!empty($publicKey)) {
             $this->_publicKey = $publicKey;
             unset($publicKey);
@@ -155,7 +144,6 @@ class Card extends Cc
         $this->_maxAmount = $this->getConfigData('max_order_total');
     }
 
-
     /**
      * Assign corresponding data
      *
@@ -167,11 +155,9 @@ class Card extends Cc
 
         parent::assignData($data);
 
-
         $content = (array) $data->getData();
 
         $info = $this->getInfoInstance();
-
 
         if (key_exists('additional_data', $content)) {
 
@@ -185,14 +171,12 @@ class Card extends Cc
                     ->setCcExpYear($additionalData['cc_exp_year'])
                     ->setCcExpMonth($additionalData['cc_exp_month']);
 
-
                 // Additional data
                 if (key_exists('monthly_installments', $additionalData))
                     $info->setAdditionalInformation(
                         'monthly_installments',
                         $additionalData['monthly_installments']
                     );
-
 
                 // PCI assurance
                 $info->setAdditionalInformation(
@@ -215,15 +199,12 @@ class Card extends Cc
                 if (key_exists(
                     'monthly_installments',
                     $content['additional_data'])){
-
                     $info->setAdditionalInformation(
                         'monthly_installments',
                         $content['additional_data']['monthly_installments']
                     );
-
                 }
             }
-
             return $this;
         }
 
@@ -256,16 +237,13 @@ class Card extends Cc
         $order_params["discount_lines"]   = Config::getDiscountLines($order);
         $order_params["shipping_contact"] = Config::getShippingContact($order);
 
-
         $finalAmount = intval((float)$amount * 1000) / 10;
 
         try {
-
             $charge_params = Config::getCharge(
                 $finalAmount,
                 Config::getCardToken($info)
             );
-
         }catch(\Exception $e){
             $this->_logger->log(100,$e->getMessage());
             throw new \Magento\Framework\Validator\Exception(
@@ -273,26 +251,21 @@ class Card extends Cc
             );
         }
 
-
         if ($this->isActiveMonthlyInstallments()
             && intval($monthlyInstallments) > 1) {
 
             if ($this->_validateMonthlyInstallments(
                 $finalAmount, $monthlyInstallments)) {
 
-
                 $charge_params
                 ['payment_method']
                 ['monthly_installments'] = $monthlyInstallments;
-
-
                 $order->addStatusHistoryComment(
                     "Monthly installments select "
                     . $charge_params['payment_method']['monthly_installments']
                     . ' months'
                 );
                 $order->save();
-
             } else {
                 $this->_logger->error(
                     __('[Conekta]: installments: '
@@ -305,9 +278,7 @@ class Card extends Cc
                 );
             }
         }
-
         try {
-
             $order_params = Config::checkBalance(
                 $order_params,
                 $finalAmount
@@ -320,7 +291,6 @@ class Card extends Cc
             $payment
                 ->setTransactionId($newCharge->id)
                 ->setIsTransactionClosed(0);
-
         } catch(\Exception $e) {
             $this->_logger->error(
                 __('[Conekta]: Payment capturing error. '
@@ -347,14 +317,10 @@ class Card extends Cc
     public function refund(\Magento\Payment\Model\InfoInterface $payment, $amount)
     {
         Config::initializeConektaLibrary($this->_privateKey);
-
         $transactionId = $payment->getParentTransactionId();
-
         try {
             $charge = \Conekta\Charge::find($transactionId);
-
             $charge->refund();
-
         } catch (\Exception $e) {
             $this->_logger->log(100,
                 json_encode(
@@ -369,7 +335,6 @@ class Card extends Cc
                 __('Payment refunding error.')
             );
         }
-
         $payment
             ->setTransactionId(
                 $transactionId. '-'
@@ -381,8 +346,6 @@ class Card extends Cc
 
         return $this;
     }
-
-
 
     /**
      * Determine method availability based on quote amount and config data
@@ -400,7 +363,6 @@ class Card extends Cc
 
             return false;
         }
-
         if (empty($this->_privateKey) || empty($this->_publicKey)) {
 
             return false;
@@ -418,6 +380,7 @@ class Card extends Cc
     public function canUseForCurrency($currencyCode)
     {
         if (!in_array($currencyCode, $this->_supportedCurrencyCodes)) {
+
             return false;
         }
 
@@ -442,9 +405,7 @@ class Card extends Cc
             "VI" => "Visa",
             "MC" => "Master Card"
         ];
-
         $out = [];
-
         foreach ($activeTypes AS $value) {
             $out[$value] = $supportType[$value];
         }
@@ -468,11 +429,9 @@ class Card extends Cc
     public function getMonthlyInstallments()
     {
         $months = explode(',', $this->_monthlyInstallments);
-
         if (!in_array("1", $months)) {
             array_push($months, "1");
         }
-
         asort($months);
 
         return $months;
@@ -497,8 +456,8 @@ class Card extends Cc
     {
         if ($totalAmount >= $this->getMinimumAmountMonthlyInstallment()) {
             if (intval($installments) > 1)
-                return ($totalAmount > $installments * 100);
 
+                return ($totalAmount > $installments * 100);
         }
 
         return false;
@@ -576,7 +535,6 @@ class Card extends Cc
                 'Custom This credit card type is not allowed for this payment method.'
             );
         }
-
         if ($ccType != 'SS' && !$this
                 ->_validateExpDate(
                     $info->getCcExpYear(),
@@ -587,7 +545,6 @@ class Card extends Cc
                 .$info->getCcType()
             );
         }
-
         if ($errorMsg) {
             throw new \Magento\Framework\Exception\LocalizedException($errorMsg);
         }
