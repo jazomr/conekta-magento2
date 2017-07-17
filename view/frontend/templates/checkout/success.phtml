@@ -41,6 +41,9 @@
                             <tr>
                                 <td><strong><?php echo __('Expires at:'); ?></strong><br><?php echo date("Y-m-d", (integer) $data["data"]["expires_at"]); ?></td>
                             </tr>
+                                <tr>
+                                    <td><strong><?php echo __('Account owner:'); ?></strong><br><?php echo $block->getAccountOwner(); ?></td>
+                                </tr>
                     <?php
                         break;
                         endswitch; ?>
