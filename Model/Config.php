@@ -41,7 +41,8 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
             throw new \Magento\Framework\Validator\Exception(__('Error process your card info.'));
         return $cardToken;
     }
-    public static function getCharge($amount, $token_id) {
+
+    public static function getChargeCard($amount, $token_id) {
         $charge = array(
             'payment_method' => array(
                 'type'     => 'card',
@@ -51,9 +52,10 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
         );
         return $charge;
     }
+
     public  function createWebhook() {
-        $sandbox_mode = (boolean) ((integer) $this->getConfigData("sandbox_mode"));
-        if ($sandbox_mode) {
+        $sandboxMode = (boolean) ((integer) $this->getConfigData("sandbox_mode"));
+        if ($sandboxMode) {
             $privateKey = (string) $this->getConfigData("test_private_api_key");
         } else {
             $privateKey = (string) $this->getConfigData("live_private_api_key");
@@ -74,7 +76,7 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
                 }
             }
             if ($different) {
-                if (!$sandbox_mode) {
+                if (!$sandboxMode) {
                     $mode = array(
                         "production_enabled" => 1
                     );
@@ -103,7 +105,6 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
         }
     }
 
-
     /**
      * Conekta initializer
      * @throws \Magento\Framework\Validator\Exception
@@ -115,13 +116,8 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
             $resolver = $objectManager->get('Magento\Framework\Locale\Resolver');
             $lang = explode('_', $resolver->getLocale());
 
-            if($lang[0] == 'en'){
-                $locale = 'en';
-            }elseif($lang[0] == 'es'){
-                $locale = 'es';
-            }else{
-                $locale = 'en';
-            }
+            $locale = ($lang[0] == 'es') ? 'es' : 'en';
+
             if (empty($privateKey)) {
                 throw new \Magento\Framework\Validator\Exception(
                     __("Please check your conekta config.")
@@ -155,6 +151,7 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
         );
         return $charge;
     }
+
     /**
      * SPEI Charge getter
      * @param $amount
@@ -172,6 +169,7 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
         );
         return $charge;
     }
+
     /**
      * Customer info getter
      * @param $order
@@ -181,12 +179,7 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
     {
         $billing = $order->getBillingAddress()->getData();
         $customer_info = [
-            'name' => preg_replace(
-                '!\s+!', ' ',
-                $billing['firstname'] . ' '
-                . $billing['middlename'] . ' '
-                . $billing['lastname']
-            ),
+            'name' => self::getCustomerName($order),
             'email' => $order->getCustomerEmail(),
             'phone' => $billing['telephone'],
             'metadata' => [
@@ -195,6 +188,7 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
         ];
         return $customer_info;
     }
+
     /**
      * Line Items getter
      * @param $order
@@ -224,6 +218,7 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
         }
         return $line_items;
     }
+
     /**
      * Shipping contact getter
      * @param $order
@@ -237,11 +232,7 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
         if ($shippingAddress) {
             $shippingData = $shippingAddress->getData();
             $shipping_contact = [
-                'receiver' => preg_replace(
-                    '!\s+!', ' ',
-                    $billing['firstname'] . ' '
-                    . $billing['middlename'] . ' '
-                    . $billing['lastname']),
+                'receiver' => self::getCustomerName($order),
                 'phone' => $billing['telephone'],
                 'address' => [
                     'street1' => $shippingData['street'],
@@ -256,6 +247,7 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
         }
         return $shipping_contact;
     }
+
     /**
      * Shipping lines getter
      * @param $order
@@ -281,6 +273,7 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
         }
         return $shipping_lines;
     }
+
     /**
      * Discount lines getter
      * @param $order
@@ -316,6 +309,7 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
         }
         return $discount_lines;
     }
+
     /**
      * Tax lines getter
      * @param $order
@@ -334,6 +328,7 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
         }
         return $tax_lines;
     }
+
     /**
      * Tax name getter
      * @param $item
@@ -351,5 +346,20 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
         return $tax_class_name;
     }
 
-
+    /**
+    * Customer name getter
+    * @param $order
+    * @return string
+    */
+    public static function getCustomerName($order)
+    {
+        $billing = $order->getBillingAddress()->getData();
+        $customer_name = preg_replace(
+                '!\s+!', ' ',
+                $billing['firstname'] . ' '
+                . $billing['middlename'] . ' '
+                . $billing['lastname']
+            );
+        return $customer_name;
+    }
 }

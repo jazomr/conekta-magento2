@@ -66,9 +66,7 @@ class Spei extends Offline
             'shipping_contact' => Config::getShippingContact($order),
             'metadata' => [
                 'checkout_id' => $order->getIncrementId(),
-                'soft_validations' => true,
-                'total_charge' => $totalAmount
-            ]
+                'soft_validations' => true            ]
         ];
 
         $days = $this->getConfigData("expiry_days");
@@ -77,8 +75,8 @@ class Spei extends Offline
 
         try {
             $orderData = Config::checkBalance($orderData, $totalAmount);
-            $orders = \Conekta\Order::create($orderData);
-            $charge = $orders->createCharge($charge_params);
+            $conektaOrder = \Conekta\Order::create($orderData);
+            $charge = $conektaOrder->createCharge($charge_params);
         } catch (\Exception $e) {
             $this->_logger->error(__('[Conekta]: Payment capturing error.'));
             throw new Exception(__($e->getMessage()));
@@ -86,7 +84,7 @@ class Spei extends Offline
 
         $order->setState(Order::STATE_PENDING_PAYMENT);
         $order->setStatus(Order::STATE_PENDING_PAYMENT);
-        $order->setExtOrderId($orders->id);
+        $order->setExtOrderId($conektaOrder->id);
         $order->setIsTransactionClosed(0);
         $order->save();
         $payment->setTransactionId($charge->id);
