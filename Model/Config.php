@@ -1,143 +1,12 @@
 <?php
 namespace Conekta\Payments\Model;
-use Conekta\Conekta;
+
 use Conekta\Webhook;
 use Conekta\Error;
 class Config extends \Magento\Payment\Model\Method\AbstractMethod {
     const CODE = 'conekta_config';
     protected $_code = self::CODE;
-/*
-    public function getShippingLines($order)
-    {
-        $shipping_method  = $order->getShippingMethod();
-        $shipping_address = $order->getShippingAddress();
-        $shipping_lines   = array();
-        $shipping_line    = array();
-        if ($order->getShippingAmount() > 0) {
-            $shipping_tax             = $order->getShippingTaxAmount();
-            $shipping_cost            = $order->getShippingAmount() + $shipping_tax;
-            $shipping_line["amount"]  = intval(strval($shipping_cost)* 100);
-            $shipping_line["method"]  = $shipping_method;
-            $shipping_line["carrier"] = $order->getShippingDescription();
-            $shipping_lines           = array($shipping_line);
-        } elseif ($shipping_address) {
-            $shipping_line["amount"]  = 0;
-            $shipping_line["method"]  = $shipping_method;
-            $shipping_line["carrier"] = $shipping_method;
-            $shipping_lines           = array($shipping_line);
-        }
-        return $shipping_lines;
-    }
-    /**
-     * Line Items getter
-     * @return array
 
-    public function getLineItems($order) {
-        $items      = $order->getAllVisibleItems();
-        $line_items = array();
-        foreach ($items as $itemId => $item){
-            if($item->getProductType() == 'simple' && $item->getPrice() <= 0){
-                break;
-            }
-            $name         = $item->getName();
-            $sku          = $item->getSku();
-            $unit_price   = intval(strval($item->getPrice()) * 100);
-            $description  = $item->getDescription();
-            $product_type = $item->getProductType();
-            if (empty($description)) {
-                $description = $name;
-            }
-            $product_type = array($product_type);
-            $line_items = array_merge($line_items, array(array(
-                    'name'        => $name,
-                    'description' => $description,
-                    'unit_price'  => $unit_price,
-                    'quantity'    => intval($item->getQtyOrdered()),
-                    'sku'         => $sku,
-                    'tags'        => $product_type
-                ))
-            );
-        }
-        return $line_items;
-    }
-    public function getCustomerInfo($order)
-    {
-        $email   =   $order->getCustomerEmail();
-        $billing = $order->getBillingAddress()->getData();
-        $customer_info          = array();
-        $customer_info["email"] = $email;
-        $customer_info["phone"] = $billing['telephone'];
-        $customer_info["name"]  =
-            preg_replace('!\s+!', ' ', $billing['firstname'] . ' ' . $billing['middlename'] . ' ' . $billing['lastname']);
-        $customer_info["metadata"] = array("soft_validations" => true);
-        return $customer_info;
-    }
-    public function getShippingContact($order) {
-        $shipping_contact = array();
-        $billing          = $order->getBillingAddress()->getData();
-        $shipping_address = $order->getShippingAddress();
-        if ($shipping_address) {
-            $shipping_data               = $shipping_address->getData();
-            $shipping_contact["phone"]   = $billing['telephone'];
-            $shipping_contact["receiver"] = preg_replace('!\s+!', ' ', $billing['firstname'] . ' ' . $billing['middlename'] . ' ' . $billing['lastname']);
-            $address                      = array();
-            $address["street1"]           = $shipping_data['street'];
-            $address["city"]              = $shipping_data['city'];
-            $address["state"]             = isset($shipping_data['region']) ? $shipping_data['region'] : "";
-            $address["country"]           = $shipping_data['country_id'];
-            $address["postal_code"]       = $shipping_data['postcode'];
-            $shipping_contact["address"]  = $address;
-            $shipping_contact["metadata"] = array("soft_validations" => true);
-        }
-        return $shipping_contact;
-    }
-    public function getTaxLines($order) {
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $tax_lines = array();
-        foreach ($order->getAllItems() as $item) {
-            //validation for products configurables with empty simple product
-            if($item->getPrice() <= 0){ // this should be good because tax does not have amount
-                break;
-            }
-            $tax_line                = array();
-            $tax_description         = self::getTaxName($item);
-            $tax_line["description"] = strip_tags($objectManager->get('Magento\Catalog\Model\Product')->load($item->getProductId())->getDescription());
-            $tax_line["amount"]      = abs(intval(strval($item->getTaxAmount())* 100));
-            $tax_lines               = array_merge($tax_lines, array($tax_line));
-        }
-        return $tax_lines;
-    }
-    public function getDiscountLines($order) {
-        $discount_lines       = array();
-        $totalDiscount        = abs(intval(strval($order->getDiscountAmount()) * 100));
-        $totalDiscountCoupons = 0;
-        foreach ($order->getAllItems() as $item) {
-            if (floatval($item->getDiscountAmount()) > 0.0) {
-                $description = $order->getDiscountDescription();
-                if (empty($description)) {
-                    $description = "discount_code";
-                }
-                $discount_line           = array();
-                $discount_line["code"]   = $description;
-                $discount_line["type"]   = "coupon";
-                $discount_line["amount"] = abs(intval(strval($order->getDiscountAmount()) * 100));
-                $discount_lines          =
-                    array_merge($discount_lines, array($discount_line));
-                $totalDiscountCoupons = $totalDiscountCoupons + $discount_line["amount"];
-            }
-        }
-        // Discount exceeds unit price or shipping.
-        if (floatval($totalDiscount) > 0.0 && $totalDiscount != $totalDiscountCoupons) {
-            $discount_lines          = array();
-            $discount_line           = array();
-            $discount_line["code"]   = "discount";
-            $discount_line["type"]   = "coupon";
-            $discount_line["amount"] = $totalDiscount;
-            $discount_lines          =
-                array_merge($discount_lines, array($discount_line));
-        }
-        return $discount_lines;
-    }*/
     public static  function checkBalance($order, $total) {
         $amount = 0;
         foreach ($order['line_items'] as $line_item) {
@@ -241,19 +110,32 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
      */
     public static function initializeConektaLibrary($privateKey)
     {
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        /** @var \Magento\Framework\Locale\Resolver $resolver */
-        $resolver = $objectManager->get('Magento\Framework\Locale\Resolver');
-        $code = explode('_',$resolver->getLocale());
-        if (empty($privateKey)) {
+        try {
+            $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+            $resolver = $objectManager->get('Magento\Framework\Locale\Resolver');
+            $lang = explode('_', $resolver->getLocale());
+
+            if($lang[0] == 'en'){
+                $locale = 'en';
+            }elseif($lang[0] == 'es'){
+                $locale = 'es';
+            }else{
+                $locale = 'en';
+            }
+            if (empty($privateKey)) {
+                throw new \Magento\Framework\Validator\Exception(
+                    __("Please check your conekta config.")
+                );
+            }
+            \Conekta\Conekta::setApiKey($privateKey);
+            \Conekta\Conekta::setApiVersion("2.0.0");
+            \Conekta\Conekta::setPlugin("Magento 2");
+            \Conekta\Conekta::setLocale($locale);
+        }catch(\Exception $e){
             throw new \Magento\Framework\Validator\Exception(
-                __("Please check your conekta config.")
+                __($e->getMessage())
             );
         }
-        Conekta::setApiKey($privateKey);
-        Conekta::setApiVersion("2.0.0");
-        Conekta::setPlugin("Magento 2");
-        Conekta::setLocale($code[0]);
     }
 
     /**

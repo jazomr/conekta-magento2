@@ -16,7 +16,6 @@ use Magento\Directory\Model\CountryFactory;
 use Magento\Payment\Model\Method\Cc;
 use Conekta\Payments\Model\Config as Config;
 use Magento\Store\Api\Data\StoreInterface;
-//use Magento\Store\Model\Data\StoreConfig;
 
 class Card extends Cc
 {
@@ -43,14 +42,10 @@ class Card extends Cc
     protected $_activeMonthlyInstallments;
     protected $_minAmountMonthInstallments;
     protected $_typesCards;
-    //protected $_config;
-    //protected $_store;
 
 
 
     public function __construct(
-        //StoreConfig $store,
-        //Config $config,
         Context $context,
         Registry $registry,
         ExtensionAttributesFactory $extensionFactory,
@@ -85,9 +80,6 @@ class Card extends Cc
                 __("Class Conekta\\Payments\\Model\\Config not found.")
             );
         }
-        //$this->_config= $config;
-
-        //$this->_store = $store;
 
         $this->_scopeConfig = $scopeConfig;
 
@@ -250,7 +242,7 @@ class Card extends Cc
      */
     public function capture(\Magento\Payment\Model\InfoInterface $payment, $amount)
     {
-        self::initializeConektaLibrary();
+        Config::initializeConektaLibrary($this->_privateKey);
         $info = $this->getInfoInstance();
         $order = $payment->getOrder();
         $monthlyInstallments = $info->getAdditionalInformation(
@@ -354,7 +346,7 @@ class Card extends Cc
      */
     public function refund(\Magento\Payment\Model\InfoInterface $payment, $amount)
     {
-        self::initializeConektaLibrary();
+        Config::initializeConektaLibrary($this->_privateKey);
 
         $transactionId = $payment->getParentTransactionId();
 
@@ -390,54 +382,7 @@ class Card extends Cc
         return $this;
     }
 
-    /**
-     * Conekta initializer
-     * @throws \Magento\Framework\Validator\Exception
-     */
 
-    public  function initializeConektaLibrary()
-    {
-        /*$lang = $this->_store->getLocale() ;
-        if (NULL === $this->_privateKey) {
-            throw new \Magento\Framework\Validator\Exception(
-                __('Please check your Conekta config.')
-            );
-        }
-        if($lang == 'en_En'){
-            $locale = 'en';
-        }elseif($lang == 'es_ES' || $lang == 'es_MX'){
-            $locale = 'es';
-        }else{
-            $locale = 'en';
-        }
-
-        \Conekta\Conekta::setApiKey($this->_privateKey);
-        \Conekta\Conekta::setPlugin("Magento 2");
-        \Conekta\Conekta::setApiVersion("2.0.0");
-        \Conekta\Conekta::setLocale($locale);
-        */
-        try {
-
-
-            $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-            /** @var \Magento\Framework\Locale\Resolver $resolver */
-            $resolver = $objectManager->get('Magento\Framework\Locale\Resolver');
-            $code = explode('_', $resolver->getLocale());
-            if (empty($this->_privateKey)) {
-                throw new \Magento\Framework\Validator\Exception(
-                    __("Please check your conekta config.")
-                );
-            }
-            \Conekta\Conekta::setApiKey($this->_privateKey);
-            \Conekta\Conekta::setApiVersion("2.0.0");
-            \Conekta\Conekta::setPlugin("Magento 2");
-            \Conekta\Conekta::setLocale($code[0]);
-        }catch(\Exception $e){
-            throw new \Magento\Framework\Validator\Exception(
-                __($e->getMessage())
-            );
-        }
-    }
 
     /**
      * Determine method availability based on quote amount and config data
