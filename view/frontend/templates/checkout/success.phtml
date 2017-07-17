@@ -24,10 +24,7 @@
                         switch ($data["type"]):
                             case "conekta_oxxo":  ?>
                             <tr>
-                                <td><img src="<?php echo $data["data"]["barcode_url"]; ?>" alt="Barcode Image" /></td>
-                            </tr>
-                            <tr>
-                                <td><strong><?php echo __('Reference Number:'); ?></strong><br><?php echo $data["data"]["barcode"]; ?></td>
+                                <td><strong><?php echo __('Reference Number:'); ?></strong><br><?php echo $data["data"]["reference"]; ?></td>
                             </tr>
                             <tr>
                                 <td><strong><?php echo __('Expires at:'); ?></strong><br><?php echo date("Y-m-d", (integer) $data["data"]["expires_at"]); ?></td>
