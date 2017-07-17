@@ -379,19 +379,6 @@ class Card extends Cc
 
             return true;
         }
-
-
-        if ($quote){ 
-            if($quote->getBaseGrandTotal() < $this->_minAmount){ 
-
-                return false;                
-            }
-            if($this->_maxAmount && $quote->getBaseGrandTotal() > $this->_maxAmount){
-
-                return false;
-            }
-        }
-        return true;
     }
     /**
      * Availability for currency
