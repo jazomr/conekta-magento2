@@ -101,7 +101,7 @@ class Card extends Cc
             if (empty($this->_minAmountMonthInstallments)
                 || $this->_minAmountMonthInstallments <= 0){
 
-                $this->_minAmountMonthInstallments = 300;
+                $this->_minAmountMonthInstallments = 300.00;
 
             }
         }
@@ -229,18 +229,18 @@ class Card extends Cc
         $monthlyInstallments = $info->getAdditionalInformation(
             'monthly_installments'
         );
-        $order_params['currency']         = $order->getStoreCurrencyCode();
-        $order_params['line_items']       = Config::getLineItems($order);
-        $order_params["tax_lines"]        = Config::getTaxLines($order);
-        $order_params["customer_info"]    = Config::getCustomerInfo($order);
-        $order_params['shipping_lines']   = Config::getShippingLines($order);
-        $order_params["discount_lines"]   = Config::getDiscountLines($order);
-        $order_params["shipping_contact"] = Config::getShippingContact($order);
+        $orderParams['currency']         = $order->getStoreCurrencyCode();
+        $orderParams['line_items']       = Config::getLineItems($order);
+        $orderParams['tax_lines']        = Config::getTaxLines($order);
+        $orderParams['customer_info']    = Config::getCustomerInfo($order);
+        $orderParams['shipping_lines']   = Config::getShippingLines($order);
+        $orderParams['discount_line']   = Config::getDiscountLines($order);
+        $orderParams['shipping_contact'] = Config::getShippingContact($order);
 
         $finalAmount = intval((float)$amount * 1000) / 10;
 
         try {
-            $charge_params = Config::getCharge(
+            $chargeParams = Config::getChargeCard(
                 $finalAmount,
                 Config::getCardToken($info)
             );
@@ -257,12 +257,12 @@ class Card extends Cc
             if ($this->_validateMonthlyInstallments(
                 $finalAmount, $monthlyInstallments)) {
 
-                $charge_params
+                $chargeParams
                 ['payment_method']
                 ['monthly_installments'] = $monthlyInstallments;
                 $order->addStatusHistoryComment(
                     "Monthly installments select "
-                    . $charge_params['payment_method']['monthly_installments']
+                    . $chargeParams['payment_method']['monthly_installments']
                     . ' months'
                 );
                 $order->save();
@@ -279,14 +279,14 @@ class Card extends Cc
             }
         }
         try {
-            $order_params = Config::checkBalance(
-                $order_params,
+            $orderParams = Config::checkBalance(
+                $orderParams,
                 $finalAmount
             );
             //create order
-            $newOrder = \Conekta\Order::create($order_params);
+            $newOrder = \Conekta\Order::create($orderParams);
             //create charge
-            $newCharge = $newOrder->createCharge($charge_params);
+            $newCharge = $newOrder->createCharge($chargeParams);
             //set transaction completed
             $payment
                 ->setTransactionId($newCharge->id)
@@ -322,14 +322,11 @@ class Card extends Cc
             $charge = \Conekta\Charge::find($transactionId);
             $charge->refund();
         } catch (\Exception $e) {
-            $this->_logger->log(100,
-                json_encode(
-                    ['transaction_id'
-                    => $transactionId,
-                        'exception'
-                        => $e->getMessage()]
-                )
-            );
+            $logger = json_encode([
+                'transaction_id' => $transactionId,
+                'exception'      => $e->getMessage()
+                ]);  
+            $this->_logger->log(100,$logger);
             $this->_logger->error(__('Payment refunding error.'));
             throw new \Magento\Framework\Validator\Exception(
                 __('Payment refunding error.')
@@ -355,14 +352,11 @@ class Card extends Cc
      */
     public function isAvailable(\Magento\Quote\Api\Data\CartInterface $quote = null)
     {
-        if ($quote
-            && ($quote->getBaseGrandTotal() < $this->_minAmount||
-                ($this->_maxAmount
-                    && $quote->getBaseGrandTotal() > $this->_maxAmount)
-            )) {
-
+        //if grand total is not betwwen min amount and max amount return true 
+        if(self::validateGrandTotal($quote, $this->_minAmount, $this->_maxAmount)){
+            // return false because values are out of bounds
             return false;
-        }
+        }        
         if (empty($this->_privateKey) || empty($this->_publicKey)) {
 
             return false;
@@ -371,6 +365,34 @@ class Card extends Cc
         return parent::isAvailable($quote);
     }
 
+    public static function validateGrandTotal($quote,$min = 0,$max = 0){ 
+        if($quote){
+            $amountBetweenBounds = $quote->getBaseGrandTotal();
+
+            if($amountBetweenBounds < $min && $amountBetweenBounds > $max ){
+
+                return true;
+            }
+
+            return false;
+        }else{
+
+            return true;
+        }
+
+
+        if ($quote){ 
+            if($quote->getBaseGrandTotal() < $this->_minAmount){ 
+
+                return false;                
+            }
+            if($this->_maxAmount && $quote->getBaseGrandTotal() > $this->_maxAmount){
+
+                return false;
+            }
+        }
+        return true;
+    }
     /**
      * Availability for currency
      *
@@ -457,7 +479,7 @@ class Card extends Cc
         if ($totalAmount >= $this->getMinimumAmountMonthlyInstallment()) {
             if (intval($installments) > 1)
 
-                return ($totalAmount > $installments * 100);
+                return ($totalAmount > ($installments * 100));
         }
 
         return false;
