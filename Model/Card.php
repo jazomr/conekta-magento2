@@ -2,7 +2,6 @@
 
 namespace Conekta\Payments\Model;
 
-
 use Magento\Framework\Model\Context;
 use Magento\Framework\Registry;
 use Magento\Framework\Api\ExtensionAttributesFactory;
@@ -304,8 +303,6 @@ class Card extends Cc
         return $this;
     }
 
-
-
     /**
      * Payment refund
      *
@@ -322,11 +319,11 @@ class Card extends Cc
             $charge = \Conekta\Charge::find($transactionId);
             $charge->refund();
         } catch (\Exception $e) {
-            $logger = json_encode([
+            $logData = json_encode([
                 'transaction_id' => $transactionId,
                 'exception'      => $e->getMessage()
             ]);
-            $this->_logger->log(100,$logger);
+            $this->_logger->log(100,$logData);
             $this->_logger->error(__('Payment refunding error.'));
             throw new \Magento\Framework\Validator\Exception(
                 __('Payment refunding error.')
@@ -353,26 +350,25 @@ class Card extends Cc
      */
     public function isAvailable(\Magento\Quote\Api\Data\CartInterface $quote = null)
     {
-        if(self::validateGrandTotal($quote,$this->_minAmount, $this->_maxAmount)){
+        if(self::amountBetweenBounds($quote,$this->_minAmount, $this->_maxAmount)){
             return false;
         }
 
         if (empty($this->_privateKey) || empty($this->_publicKey)) {
-
             return false;
         }
 
         return parent::isAvailable($quote);
     }
 
-    public static function validateGrandTotal($quote, $min, $max)
+    public static function amountBetweenBounds($quote, $min, $max)
     {
         if(!$quote){
             return false;
         }
-        $amountBetweenBounds = $quote->getBaseGrandTotal();
+        $grandTotal = $quote->getBaseGrandTotal();
 
-        if($amountBetweenBounds < $min || $amountBetweenBounds > $max){
+        if($grandTotal < $min || $grandTotal > $max){
             return false;
         }
         return true;
@@ -387,7 +383,6 @@ class Card extends Cc
     public function canUseForCurrency($currencyCode)
     {
         if (!in_array($currencyCode, $this->_supportedCurrencyCodes)) {
-
             return false;
         }
 
@@ -464,7 +459,7 @@ class Card extends Cc
         if ($totalAmount >= $this->getMinimumAmountMonthlyInstallment()) {
             if (intval($installments) > 1)
 
-                return ($totalAmount > $installments * 100);
+                return ($totalAmount > ($installments * 100));
         }
 
         return false;
