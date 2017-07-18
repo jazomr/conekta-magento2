@@ -353,12 +353,6 @@ class Card extends Cc
      */
     public function isAvailable(\Magento\Quote\Api\Data\CartInterface $quote = null)
     {
-        if ($quote && (
-                $quote->getBaseGrandTotal() < $this->_minAmount
-                || ($this->_maxAmount && $quote->getBaseGrandTotal() > $this->_maxAmount))
-        ) {
-            return false;
-        }
         if(self::validateGrandTotal($quote,$this->_minAmount, $this->_maxAmount)){
             return false;
         }
@@ -371,11 +365,11 @@ class Card extends Cc
         return parent::isAvailable($quote);
     }
 
-    public static function validateGrandTotal($quote, $min, $max){
+    public static function validateGrandTotal($quote, $min, $max)
+    {
         if(!$quote){
             return false;
         }
-
         $amountBetweenBounds = $quote->getBaseGrandTotal();
 
         if($amountBetweenBounds < $min || $amountBetweenBounds > $max){
