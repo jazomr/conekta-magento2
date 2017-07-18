@@ -9,18 +9,18 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
 
     public static  function checkBalance($order, $total) {
         $amount = 0;
-        foreach ($order['line_items'] as $line_item) {
+        foreach ($order['line_items'] as $lineItem) {
             $amount = $amount +
-                ($line_item['unit_price'] * $line_item['quantity']);
+                ($lineItem['unit_price'] * $lineItem['quantity']);
         }
-        foreach ($order['shipping_lines'] as $shipping_line) {
-            $amount = $amount + $shipping_line['amount'];
+        foreach ($order['shipping_lines'] as $shippingLine) {
+            $amount = $amount + $shippingLine['amount'];
         }
-        foreach ($order['discount_lines'] as $discount_line) {
-            $amount = $amount - $discount_line['amount'];
+        foreach ($order['discount_lines'] as $discountLine) {
+            $amount = $amount - $discountLine['amount'];
         }
-        foreach ($order['tax_lines'] as $tax_line) {
-            $amount = $amount + $tax_line['amount'];
+        foreach ($order['tax_lines'] as $taxLine) {
+            $amount = $amount + $taxLine['amount'];
         }
         if ($amount != $total) {
             $adjustment = $total - $amount;
@@ -42,11 +42,11 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
         return $cardToken;
     }
 
-    public static function getChargeCard($amount, $token_id) {
+    public static function getChargeCard($amount, $tokenId) {
         $charge = array(
             'payment_method' => array(
                 'type'     => 'card',
-                'token_id' => $token_id
+                'tokenId' => $tokenId
             ),
             'amount' => $amount
         );
@@ -61,17 +61,17 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
             $privateKey = (string) $this->getConfigData("live_private_api_key");
         }
         self::initializeConektaLibrary($privateKey);
-        $url_webhook = (string) $this->getConfigData("conekta_webhook");
-        if (empty($url_webhook)) {
-            $url_webhook = \Conekta\Payments\Model\Source\Webhook::getUrl();
+        $urlWebhook = (string) $this->getConfigData("conekta_webhook");
+        if (empty($urlWebhook)) {
+            $urlWebhook = \Conekta\Payments\Model\Source\Webhook::getUrl();
         }
         $events = ["events" => ["charge.paid"]];
-        $error_message = null;
+        $errorMessage = null;
         try {
             $different = true;
             $webhooks = Webhook::where();
             foreach ($webhooks as $webhook) {
-                if (strpos($webhook->webhook_url, $url_webhook) !== false) {
+                if (strpos($webhook->webhook_url, $urlWebhook) !== false) {
                     $different = false;
                 }
             }
@@ -86,22 +86,22 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
                     );
                 }
                 $webhook = Webhook::create(
-                    array_merge(["url" => $url_webhook], $mode, $events)
+                    array_merge(["url" => $urlWebhook], $mode, $events)
                 );
             } else {
                 throw new \Magento\Framework\Validator\Exception(
-                    __('Webhook was already registered in Conekta!<br>URL: ' . $url_webhook)
+                    __('Webhook was already registered in Conekta!<br>URL: ' . $urlWebhook)
                 );
             }
         } catch (Error $e) {
-            $error_message = $e->getMessage();
+            $errorMessage = $e->getMessage();
             $this->_logger->error(
-                __('[Conekta]: Webhook error, Message: ' . $error_message
-                    . ' URL: ' . $url_webhook)
+                __('[Conekta]: Webhook error, Message: ' . $errorMessage
+                    . ' URL: ' . $urlWebhook)
             );
             throw new \Magento\Framework\Validator\Exception(
-                __('Can not register this webhook ' . $url_webhook . '<br>'
-                    . 'Message: ' . (string) $error_message));
+                __('Can not register this webhook ' . $urlWebhook . '<br>'
+                    . 'Message: ' . (string) $errorMessage));
         }
     }
 
@@ -116,7 +116,7 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
             $resolver = $objectManager->get('Magento\Framework\Locale\Resolver');
             $lang = explode('_', $resolver->getLocale());
 
-            $locale = ($lang[0] == 'es') ? 'es' : 'en';
+            $locale = $lang[0] == 'es' ? 'es' : 'en';
 
             if (empty($privateKey)) {
                 throw new \Magento\Framework\Validator\Exception(
@@ -137,15 +137,15 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
     /**
      * OXXO Charge getter
      * @param $amount
-     * @param $expiry_date
+     * @param $expiryDate
      * @return array
      */
-    public static function getChargeOxxo($amount, $expiry_date)
+    public static function getChargeOxxo($amount, $expiryDate)
     {
         $charge = array(
             'payment_method' => array(
                 'type' => 'oxxo_cash',
-                'expires_at' => $expiry_date
+                'expires_at' => $expiryDate
             ),
             'amount' => $amount
         );
@@ -155,15 +155,15 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
     /**
      * SPEI Charge getter
      * @param $amount
-     * @param $expiry_date
+     * @param $expiryDate
      * @return array
      */
-    public static function getChargeSpei($amount, $expiry_date)
+    public static function getChargeSpei($amount, $expiryDate)
     {
         $charge = array(
             'payment_method' => array(
                 'type' => 'spei',
-                'expires_at' => $expiry_date
+                'expires_at' => $expiryDate
             ),
             'amount' => $amount
         );
@@ -178,7 +178,7 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
     public static function getCustomerInfo($order)
     {
         $billing = $order->getBillingAddress()->getData();
-        $customer_info = [
+        $customerInfo = [
             'name' => self::getCustomerName($order),
             'email' => $order->getCustomerEmail(),
             'phone' => $billing['telephone'],
@@ -186,7 +186,7 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
                 'soft_validations' => true
             ]
         ];
-        return $customer_info;
+        return $customerInfo;
     }
 
     /**
@@ -197,13 +197,13 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
     public static function getLineItems($order)
     {
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $line_items = [];
+        $lineItems = [];
         $order->getAllVisibleItems();
         $items = $order->getAllVisibleItems();
         foreach ($items as $itemId => $item) {
             if ($item->getProductType() == 'simple' && $item->getPrice() <= 0)
                 break;
-            $line_items[] = [
+            $lineItems[] = [
                 'name' => $item->getName(),
                 'sku' => $item->getSku(),
                 'unit_price' => intval(strval($item->getPrice()) * 100),
@@ -216,7 +216,7 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
                 ]
             ];
         }
-        return $line_items;
+        return $lineItems;
     }
 
     /**
@@ -228,10 +228,10 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
     {
         $shippingAddress = $order->getShippingAddress();
         $billing = $order->getBillingAddress()->getData();
-        $shipping_contact = [];
+        $shippingContact = [];
         if ($shippingAddress) {
             $shippingData = $shippingAddress->getData();
-            $shipping_contact = [
+            $shippingContact = [
                 'receiver' => self::getCustomerName($order),
                 'phone' => $billing['telephone'],
                 'address' => [
@@ -245,7 +245,7 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
                 ]
             ];
         }
-        return $shipping_contact;
+        return $shippingContact;
     }
 
     /**
@@ -255,23 +255,23 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
      */
     public static function getShippingLines($order)
     {
-        $shipping_lines = [];
+        $shippingLines = [];
         if ($order->getShippingAmount() > 0) {
-            $shipping_tax = $order->getShippingTaxAmount();
-            $shipping_cost = $order->getShippingAmount() + $shipping_tax;
-            $shipping_lines [] = [
-                'amount' => intval(strval($shipping_cost) * 100),
+            $shippingTax = $order->getShippingTaxAmount();
+            $shippingCost = $order->getShippingAmount() + $shippingTax;
+            $shippingLines [] = [
+                'amount' => intval(strval($shippingCost) * 100),
                 'method' => $order->getShippingMethod(),
                 'carrier' => $order->getShippingDescription()
             ];
         } else {
-            $shipping_lines [] = [
+            $shippingLines [] = [
                 'amount' => 0,
                 'method' => $order->getShippingMethod(),
                 'carrier' => $order->getShippingDescription()
             ];
         }
-        return $shipping_lines;
+        return $shippingLines;
     }
 
     /**
@@ -281,7 +281,7 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
      */
     public static function getDiscountLines($order)
     {
-        $discount_lines = array();
+        $discountLines = array();
         $totalDiscount = abs(intval(strval($order->getDiscountAmount()) * 100));
         $totalDiscountCoupons = 0;
         foreach ($order->getAllItems() as $item) {
@@ -289,25 +289,25 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
                 $description = $order->getDiscountDescription();
                 if (empty($description))
                     $description = "discount_code";
-                $discount_line = array();
-                $discount_line["code"] = $description;
-                $discount_line["type"] = "coupon";
-                $discount_line["amount"] = abs(intval(strval($order->getDiscountAmount()) * 100));
-                $discount_lines =
-                    array_merge($discount_lines, array($discount_line));
-                $totalDiscountCoupons = $totalDiscountCoupons + $discount_line["amount"];
+                $discountLine = array();
+                $discountLine["code"] = $description;
+                $discountLine["type"] = "coupon";
+                $discountLine["amount"] = abs(intval(strval($order->getDiscountAmount()) * 100));
+                $discountLines =
+                    array_merge($discountLines, array($discountLine));
+                $totalDiscountCoupons = $totalDiscountCoupons + $discountLine["amount"];
             }
         }
         if (floatval($totalDiscount) > 0.0 && $totalDiscount != $totalDiscountCoupons) {
-            $discount_lines = array();
-            $discount_line = array();
-            $discount_line["code"] = "discount";
-            $discount_line["type"] = "coupon";
-            $discount_line["amount"] = $totalDiscount;
-            $discount_lines =
-                array_merge($discount_lines, array($discount_line));
+            $discountLines = array();
+            $discountLine = array();
+            $discountLine["code"] = "discount";
+            $discountLine["type"] = "coupon";
+            $discountLine["amount"] = $totalDiscount;
+            $discountLines =
+                array_merge($discountLines, array($discountLine));
         }
-        return $discount_lines;
+        return $discountLines;
     }
 
     /**
@@ -317,16 +317,16 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
      */
     public static function getTaxLines($order)
     {
-        $tax_lines = [];
+        $taxLines = [];
         foreach ($order->getAllItems() as $item) {
             if ($item->getProductType() == 'simple' && $item->getPrice() <= 0)
                 break;
-            $tax_lines[] = [
+            $taxLines[] = [
                 'description' => self::getTaxName($item),
                 'amount' => intval(strval($item->getTaxAmount()) * 100)
             ];
         }
-        return $tax_lines;
+        return $taxLines;
     }
 
     /**
@@ -338,12 +338,12 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
     {
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $_product = $objectManager->get('Magento\Catalog\Model\Product')->load($item->getProductId());
-        $tax_class_id = $_product->getTaxClassId();
-        $tax_class = $objectManager->get('Magento\Tax\Model\ClassModel')->load($tax_class_id);
-        $tax_class_name = $tax_class->getClassName();
-        if (empty($tax_class_name))
-            $tax_class_name = "tax";
-        return $tax_class_name;
+        $taxClassId = $_product->getTaxClassId();
+        $taxClass = $objectManager->get('Magento\Tax\Model\ClassModel')->load($taxClassId);
+        $taxClassName = $taxClass->getClassName();
+        if (empty($taxClassName))
+            $taxClassName = "tax";
+        return $taxClassName;
     }
 
     /**
@@ -354,12 +354,12 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
     public static function getCustomerName($order)
     {
         $billing = $order->getBillingAddress()->getData();
-        $customer_name = preg_replace(
+        $customerName = preg_replace(
                 '!\s+!', ' ',
                 $billing['firstname'] . ' '
                 . $billing['middlename'] . ' '
                 . $billing['lastname']
             );
-        return $customer_name;
+        return $customerName;
     }
 }
