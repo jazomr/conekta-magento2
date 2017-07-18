@@ -234,7 +234,7 @@ class Card extends Cc
         $orderParams['tax_lines']        = Config::getTaxLines($order);
         $orderParams['customer_info']    = Config::getCustomerInfo($order);
         $orderParams['shipping_lines']   = Config::getShippingLines($order);
-        $orderParams['discount_line']   = Config::getDiscountLines($order);
+        $orderParams['discount_lines']   = Config::getDiscountLines($order);
         $orderParams['shipping_contact'] = Config::getShippingContact($order);
 
         $finalAmount = intval((float)$amount * 1000) / 10;
@@ -325,7 +325,7 @@ class Card extends Cc
             $logger = json_encode([
                 'transaction_id' => $transactionId,
                 'exception'      => $e->getMessage()
-                ]);  
+            ]);
             $this->_logger->log(100,$logger);
             $this->_logger->error(__('Payment refunding error.'));
             throw new \Magento\Framework\Validator\Exception(
@@ -344,6 +344,7 @@ class Card extends Cc
         return $this;
     }
 
+
     /**
      * Determine method availability based on quote amount and config data
      *
@@ -352,11 +353,16 @@ class Card extends Cc
      */
     public function isAvailable(\Magento\Quote\Api\Data\CartInterface $quote = null)
     {
-        //if grand total is not betwwen min amount and max amount return true 
-        if(self::validateGrandTotal($quote, $this->_minAmount, $this->_maxAmount)){
-            // return false because values are out of bounds
+        if ($quote && (
+                $quote->getBaseGrandTotal() < $this->_minAmount
+                || ($this->_maxAmount && $quote->getBaseGrandTotal() > $this->_maxAmount))
+        ) {
             return false;
-        }        
+        }
+        if(self::validateGrandTotal($quote,$this->_minAmount, $this->_maxAmount)){
+            return false;
+        }
+
         if (empty($this->_privateKey) || empty($this->_publicKey)) {
 
             return false;
@@ -365,21 +371,19 @@ class Card extends Cc
         return parent::isAvailable($quote);
     }
 
-    public static function validateGrandTotal($quote,$min = 0,$max = 0){ 
-        if($quote){
-            $amountBetweenBounds = $quote->getBaseGrandTotal();
-
-            if($amountBetweenBounds < $min && $amountBetweenBounds > $max ){
-
-                return true;
-            }
-
+    public static function validateGrandTotal($quote, $min, $max){
+        if(!$quote){
             return false;
-        }else{
-
-            return true;
         }
+
+        $amountBetweenBounds = $quote->getBaseGrandTotal();
+
+        if($amountBetweenBounds < $min || $amountBetweenBounds > $max){
+            return false;
+        }
+        return true;
     }
+
     /**
      * Availability for currency
      *
@@ -466,7 +470,7 @@ class Card extends Cc
         if ($totalAmount >= $this->getMinimumAmountMonthlyInstallment()) {
             if (intval($installments) > 1)
 
-                return ($totalAmount > ($installments * 100));
+                return ($totalAmount > $installments * 100);
         }
 
         return false;
