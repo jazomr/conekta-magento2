@@ -58,16 +58,16 @@ class Oxxo extends Offline
         $totalAmount = intval((float)$amount * 1000) / 10;
 
         $orderData = [
-            'currency' => strtolower($order->getStoreCurrencyCode()),
-            'line_items' => Config::getLineItems($order),
-            'shipping_lines' => Config::getShippingLines($order),
-            'discount_lines' => Config::getDiscountLines($order),
-            'tax_lines' => Config::getTaxLines($order),
-            'customer_info' => Config::getCustomerInfo($order),
-            'shipping_contact' => Config::getShippingContact($order),
+            'currency'              => strtolower($order->getStoreCurrencyCode()),
+            'line_items'            => Config::getLineItems($order),
+            'shipping_lines'        => Config::getShippingLines($order),
+            'discount_lines'        => Config::getDiscountLines($order),
+            'tax_lines'             => Config::getTaxLines($order),
+            'customer_info'         => Config::getCustomerInfo($order),
+            'shipping_contact'      => Config::getShippingContact($order),
             'metadata' => [
-                'checkout_id' => $order->getIncrementId(),
-                'soft_validations' => true            ]
+                'checkout_id'       => $order->getIncrementId(),
+                'soft_validations'  => true            ]
         ];
 
         $days = $this->getConfigData("expiry_days");
@@ -93,8 +93,8 @@ class Oxxo extends Offline
         $this->getInfoInstance()->setAdditionalInformation("offline_info", [
             "type" => $this->_code,
             "data" => [
-                "reference" => $charge->payment_method->reference,
-                "expires_at" => $charge->payment_method->expires_at
+                "reference"     => $charge->payment_method->reference,
+                "expires_at"    => $charge->payment_method->expires_at
             ]
         ]);
         $payment->setSkipOrderProcessing(true);
