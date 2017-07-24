@@ -18,6 +18,7 @@ use Magento\Store\Api\Data\StoreInterface;
 
 class Card extends Cc
 {
+    const MINAMOUNT = 300.00;
     const CODE = 'conekta_card';
     protected $_code = self::CODE;
     protected $_isGateway                   = true;
@@ -100,7 +101,7 @@ class Card extends Cc
             if (empty($this->_minAmountMonthInstallments)
                 || $this->_minAmountMonthInstallments <= 0){
 
-                $this->_minAmountMonthInstallments = 300.00;
+                $this->_minAmountMonthInstallments = MINAMOUNT;
 
             }
         }
@@ -416,8 +417,9 @@ class Card extends Cc
     }
 
     /**
-     *
-     *
+     * isActiveMonthlyInstallments 
+     * return if is active monthly installments
+     * @return boolean
      */
     public function isActiveMonthlyInstallments()
     {

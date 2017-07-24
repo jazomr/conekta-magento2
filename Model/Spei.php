@@ -14,7 +14,7 @@ use Magento\Framework\Model\ResourceModel\AbstractResource;
 use Magento\Framework\Data\Collection\AbstractDb;
 use Conekta\Payments\Model\Config as Config;
 use Magento\Payment\Model\InfoInterface as InfoInterface;
-use Magento\Framework\Validator\Exception as Exception;
+use Magento\Framework\Validator\Exception as ValidatorException;
 
 /**
  * Pay in Spei payment method model
@@ -77,9 +77,9 @@ class Spei extends Offline
             $orderData = Config::checkBalance($orderData, $totalAmount);
             $conektaOrder = \Conekta\Order::create($orderData);
             $charge = $conektaOrder->createCharge($chargeParams);
-        } catch (\Exception $e) {
+        } catch (ValidatorException $e) {
             $this->_logger->error(__('[Conekta]: Payment capturing error.'));
-            throw new Exception(__($e->getMessage()));
+            throw new ValidatorException(__($e->getMessage()));
         }
 
         $order->setState(Order::STATE_PENDING_PAYMENT);

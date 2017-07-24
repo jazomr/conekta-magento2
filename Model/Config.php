@@ -281,7 +281,7 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
      */
     public static function getDiscountLines($order)
     {
-        $discountLines = array();
+        $discountLines = [];
         $totalDiscount = abs(intval(strval($order->getDiscountAmount()) * 100));
         $totalDiscountCoupons = 0;
         foreach ($order->getAllItems() as $item) {
@@ -289,7 +289,7 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
                 $description = $order->getDiscountDescription();
                 if (empty($description))
                     $description = "discount_code";
-                $discountLine = array();
+                $discountLine = [];
                 $discountLine["code"] = $description;
                 $discountLine["type"] = "coupon";
                 $discountLine["amount"] = abs(intval(strval($order->getDiscountAmount()) * 100));
@@ -299,8 +299,8 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
             }
         }
         if (floatval($totalDiscount) > 0.0 && $totalDiscount != $totalDiscountCoupons) {
-            $discountLines = array();
-            $discountLine = array();
+            $discountLines = [];
+            $discountLine = [];
             $discountLine["code"] = "discount";
             $discountLine["type"] = "coupon";
             $discountLine["amount"] = $totalDiscount;
@@ -343,6 +343,7 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
         $taxClassName = $taxClass->getClassName();
         if (empty($taxClassName))
             $taxClassName = "tax";
+
         return $taxClassName;
     }
 
@@ -354,12 +355,12 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
     public static function getCustomerName($order)
     {
         $billing = $order->getBillingAddress()->getData();
-        $customerName = preg_replace(
-                '!\s+!', ' ',
-                $billing['firstname'] . ' '
-                . $billing['middlename'] . ' '
-                . $billing['lastname']
+        $customerName = sprintf('%s %s %s', 
+            $billing['firstname'], 
+            $billing['middlename'], 
+            $billing['lastname']
             );
+        
         return $customerName;
     }
 }
