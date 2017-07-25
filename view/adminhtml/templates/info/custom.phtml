@@ -18,14 +18,9 @@ $info = $data["data"];
                      switch ($type):
                         case "conekta_oxxo": ?>
                         <tr>
-                            <td colspan="2" align="center">
-                                <img src="<?php echo $info["barcode_url"]; ?>" style="display: block; margin-left: auto; margin-right: auto;" alt="Barcode Image" />
-                            </td>
-                        </tr>
-                        <tr>
                             <th><strong><?php echo __('Reference Number:'); ?></strong></th>
                             <td>
-                                <?php echo $info["barcode"]; ?>
+                                <?php echo $info["reference"]; ?>
                             </td>
                         </tr>
                         <tr>
