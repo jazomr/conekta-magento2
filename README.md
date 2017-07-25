@@ -40,4 +40,4 @@ composer update conekta/magento2-module
 
 Magento Version Compatibility
 -----------------------------
-The plugin has been tested in Magento 2.0.7. Support is not guaranteed for untested versions.
+The plugin has been tested in Magento 2.2.0. Support is not guaranteed for untested versions.
