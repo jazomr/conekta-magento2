@@ -2,21 +2,26 @@
     "name": "conekta/magento2-module",
     "description": "Conekta rules!",
     "type": "magento2-module",
-    "version": "1.1.0",
+    "version": "2.0.0",
     "minimum-stability": "stable",
     "require": {
-        "conekta/conekta-php": "3.1.0"
+        "conekta/conekta-php": "*"
     },
     "authors": [
         {
             "name": "Conekta",
-            "homepage": "http://conekta.io/",
-            "email": "soporte@conekta.io"
+            "homepage": "http://conekta.com/",
+            "email": "soporte@conekta.com"
         },
         {
-            "name": "Cristian Benavides",
-            "homepage": "http://conekta.io",
-            "email": "cristian@conekta.io"
+            "name": "Eduardo Enriquez",
+            "homepage": "http://conekta.com",
+            "email": "eenriquez@conekta.com"
+        },
+        {
+            "name": "Jorge Martinez",
+            "homepage": "http://conekta.com",
+            "email": "jorge@conekta.com"
         }
     ],
     "license": [

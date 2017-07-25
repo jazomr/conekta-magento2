@@ -1,6 +1,6 @@
 ![alt tag](https://raw.github.com/conekta/conekta-magento/master/readme_files/cover.png)
 
-Magento 2 Plugin v.1.1.5 (BETA)
+Magento 2 Plugin v.2.0.0 (Stable)
 ========================
 
 Installation

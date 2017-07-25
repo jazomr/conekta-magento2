@@ -37,6 +37,7 @@
                 <payment_action>authorize</payment_action>
                 <model>Conekta\Payments\Model\Oxxo</model>
                 <group>offline</group>
+                <expiry_days>30</expiry_days>
             </conekta_oxxo>
             <!-- // Conekta OXXO // -->
             
@@ -49,6 +50,8 @@
                 <payment_action>authorize</payment_action>
                 <model>Conekta\Payments\Model\Spei</model>
                 <group>offline</group>
+                <expiry_days>180</expiry_days>
+                <account_owner>Description for CLABE reference</account_owner>
             </conekta_spei>
             <!-- // Conekta SPEI // -->
         </payment>
