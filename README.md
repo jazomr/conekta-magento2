@@ -14,7 +14,7 @@ Installation
 2. Add the dependency
 
     ```bash
-    composer require conekta/magento2-module dev-master
+    composer require conekta/conekta_payments dev-master
     ```
 3. Update your Magento
 
