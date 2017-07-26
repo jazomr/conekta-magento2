@@ -32,7 +32,7 @@ class Index extends Action
                 header('HTTP/1.1 200 OK');
                 return;
             } catch (\Exception $e) {
-                $this->_logger->log(100, json_encode($e->getMessage());
+                $this->_logger->log(100, json_encode($e->getMessage()));
             }
         }
     }
