@@ -46,7 +46,7 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
         $charge = array(
             'payment_method' => array(
                 'type'     => 'card',
-                'tokenId' => $tokenId
+                'token_id' => $tokenId
             ),
             'amount' => $amount
         );

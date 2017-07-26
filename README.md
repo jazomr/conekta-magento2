@@ -14,7 +14,7 @@ Installation
 2. Add the dependency
 
     ```bash
-    composer require conekta/magento2-module dev-master
+    composer require conekta/conekta_payments dev-master
     ```
 3. Update your Magento
 
@@ -40,4 +40,4 @@ composer update conekta/magento2-module
 
 Magento Version Compatibility
 -----------------------------
-The plugin has been tested in Magento 2.0.7. Support is not guaranteed for untested versions.
+The plugin has been tested in Magento 2.2.0. Support is not guaranteed for untested versions.
