@@ -4,9 +4,13 @@ namespace Conekta\Payments\Controller\Webhook;
 
 use Magento\Framework\App\Action\Action;
 use Magento\Sales\Model\Order;
-
 class Index extends Action
 {
+    protected $logger;
+    public function __construct(\Psr\Log\LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+    }
     public function execute() {
         $body = @file_get_contents('php://input');
         $event = json_decode($body);
@@ -26,9 +30,9 @@ class Index extends Action
                 $order->save();
                 
                 header('HTTP/1.1 200 OK');
-                exit;
+                return;
             } catch (\Exception $e) {
-                echo $e->getMessage();
+                $this->_logger->log(100, json_encode($e->getMessage());
             }
         }
     }
