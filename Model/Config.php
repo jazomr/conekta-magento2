@@ -93,7 +93,7 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
                     __('Webhook was already registered in Conekta!<br>URL: ' . $urlWebhook)
                 );
             }
-        } catch (Error $e) {
+        } catch (\Exception $e) {
             $errorMessage = $e->getMessage();
             $this->_logger->error(
                 __('[Conekta]: Webhook error, Message: ' . $errorMessage
@@ -126,6 +126,7 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
             \Conekta\Conekta::setApiKey($privateKey);
             \Conekta\Conekta::setApiVersion("2.0.0");
             \Conekta\Conekta::setPlugin("Magento 2");
+            \Conekta\Conekta::setPluginVersion("2.0.0");
             \Conekta\Conekta::setLocale($locale);
         }catch(\Exception $e){
             throw new \Magento\Framework\Validator\Exception(
