@@ -24,8 +24,10 @@ class Webhook implements ObserverInterface
      * @param ManagerInterface $messageManager
      */
     public function __construct(
-    Config $config, ManagerInterface $messageManager
+        Config $config, 
+        ManagerInterface $messageManager
     ) {
+        parent::__construct($config, $messageManager);
         $this->config = $config;
         $this->messageManager = $messageManager;
     }
