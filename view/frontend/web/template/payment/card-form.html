@@ -20,7 +20,7 @@
             <input type="hidden" id="card_token" name="card_token" value="" >
             <div class="field number required">
                 <label class="label" style="font-weight: 600;" for="card_holder_name">
-                    <span>Card holder name</span><span style="color: #e02b27; font-size: 1.2rem; margin: 0 0 0 5px;">*</span>
+                    <span>Tarjeta-habiente</span><span style="color: #e02b27; font-size: 1.2rem; margin: 0 0 0 5px;">*</span>
                 </label>
                 <div class="control">
                     <input type="text" id="card_holder_name" name="card_holder_name" class="input-text" style="width: 270px; margin: 8px 0 17px;" required >
@@ -29,7 +29,7 @@
             <!-- ko template: 'Magento_Payment/payment/cc-form' --><!-- /ko -->
             <!-- ko if: activeMonthlyInstallments() && getTotal() >= getMinimumAmountMonthlyInstallments() -->
                 <div class="field type">
-                    <label class="label" for="conekta_monthly_installments" style="font-weight: 600; margin-bottom: 5px;">Monthly Installments</label>
+                    <label class="label" for="conekta_monthly_installments" style="font-weight: 600; margin-bottom: 5px;">Meses sin intereses</label>
                     <div class="control">
                         <select id="conekta_monthly_installments" name="monthly_installments" class="select" style="width: auto;" data-bind="options: getMonthlyInstallments(), 
                         optionsText: function(month) {

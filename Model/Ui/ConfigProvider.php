@@ -125,18 +125,18 @@ class ConfigProvider implements ConfigProviderInterface
     */
     private function _getMonths(){
         return [
-            "1" => "01 - January",
-            "2" => "02 - February",
-            "3" => "03 - March",
-            "4" => "04 - April",
-            "5" => "05 - May",
-            "6" => "06 - June",
-            "7" => "07 - July",
-            "8" => "08 - August",
-            "9" => "09 - September",
-            "10" => "10 - October",
-            "11" => "11 - November",
-            "12" => "12 - December"
+            "1" => "01 - Enero",
+            "2" => "02 - Febrero",
+            "3" => "03 - Marzo",
+            "4" => "04 - Abril",
+            "5" => "05 - Mayo",
+            "6" => "06 - Junio",
+            "7" => "07 - Julio",
+            "8" => "08 - Augosto",
+            "9" => "09 - Septiembre",
+            "10" => "10 - Octubre",
+            "11" => "11 - Noviembre",
+            "12" => "12 - Diciembre"
         ];
     }
     
