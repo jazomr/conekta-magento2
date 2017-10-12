@@ -406,7 +406,7 @@ class Card extends Cc
         $supportType = [
             "AE" => "American Express",
             "VI" => "Visa",
-            "MC" => "Master Card"
+            "MC" => "MasterCard"
         ];
         $out = [];
         foreach ($activeTypes AS $value) {
@@ -513,11 +513,11 @@ class Card extends Cc
             if ($this->validateCcNumOther($binNumber)) {
                 $ccTypeRegExpList = [
                     // Visa
-                    'VI' => '/^4[0-9]{6}([0-9]{4})?$/',
-                    // Master Card
-                    'MC' => '/^5[1-5][0-9]{10}$/',
+                    'VI' => '/^4[0-9]{12}([0-9]{3})?$/',
+                    // MasterCard
+                    'MC' => '/^(?:5[1-5][0-9]{2}|222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12}$/',
                     // American Express
-                    'AE' => '/^3[47][0-9]{10}$/',
+                    'AE' => '/^3[47][0-9]{13}$/',
                 ];
 
                 // Validate only main brands.
