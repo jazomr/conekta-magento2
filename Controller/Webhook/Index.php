@@ -6,10 +6,8 @@ use Magento\Framework\App\Action\Action;
 use Magento\Sales\Model\Order;
 class Index extends Action
 {
-    protected $logger;
-    public function __construct(\Psr\Log\LoggerInterface $logger)
-    {
-        $this->logger = $logger;
+    public function __construct(\Magento\Framework\App\Action\Context $context) {
+        parent::__construct($context);
     }
     public function execute() {
         $body = @file_get_contents('php://input');
@@ -32,7 +30,12 @@ class Index extends Action
                 header('HTTP/1.1 200 OK');
                 return;
             } catch (\Exception $e) {
-                $this->_logger->log(100, json_encode($e->getMessage()));
+                \Magento\Framework\App\ObjectManager::getInstance()
+                                                                ->get(\Psr\Log\LoggerInterface::class)
+                                                                ->critical(
+                                                                    'Error processing webhook notification', 
+                                                                    ['exception' => $e]
+                                                                );
             }
         }
     }
