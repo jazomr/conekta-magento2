@@ -126,7 +126,7 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
             \Conekta\Conekta::setApiKey($privateKey);
             \Conekta\Conekta::setApiVersion("2.0.0");
             \Conekta\Conekta::setPlugin("Magento 2");
-            \Conekta\Conekta::setPluginVersion("2.0.1");
+            \Conekta\Conekta::setPluginVersion("2.0.2");
             \Conekta\Conekta::setLocale($locale);
         }catch(\Exception $e){
             throw new \Magento\Framework\Validator\Exception(
