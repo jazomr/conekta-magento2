@@ -18,9 +18,9 @@ class Index extends Action
         
         if ($charge->status === "paid"){
             try{ 
-                $order->loadByIncrementId($charge->reference_id);
-                $order->setSate(Order::STATE_PROCESSING);
-                $order->setStatus(Order::STATE_PROCESSING);
+                $order->loadByIncrementId($charge->metadata->checkout_id);
+                $order->setSate(Order::STATE_COMPLETE);
+                $order->setStatus(Order::STATE_COMPLETE);
                 
                 $order->addStatusHistoryComment("Payment received successfully")
                         ->setIsCustomerNotified(true);

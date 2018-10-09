@@ -1,3 +1,7 @@
+## [2.0.2](https://github.com/conekta/conekta-magento2/releases/tag/v2.0.2) - 2018-10-09
+### Fix
+- Fix on webhook bug
+
 ## [2.0.1](https://github.com/conekta/conekta-magento2/releases/tag/v2.0.1) - 2017-08-31
 ### Fix
 - Hotfix at instantiation of webhook observer
