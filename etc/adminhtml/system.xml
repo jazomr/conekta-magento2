@@ -12,19 +12,19 @@
                 <field id="test_public_api_key" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Test Public Key</label>
                 </field>
-                <field id="test_private_api_key" translate="label" type="obscure" sortOrder="4" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="test_private_api_key" translate="label" type="obscure" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Test Private Key</label>
                     <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
                 </field>
                 <field id="live_public_api_key" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Live Public Key</label>
                 </field>
-                <field id="live_private_api_key" translate="label" type="obscure" sortOrder="6" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="live_private_api_key" translate="label" type="obscure" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Live Private Key</label>
                     <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
                 </field>
                 <!-- // Key's Setup // -->
-                <field id="sandbox_mode" translate="label" type="select" sortOrder="7" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="sandbox_mode" translate="label" type="select" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Sandbox</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
@@ -107,7 +107,7 @@
                     <label>New Order Status</label>
                     <source_model>Conekta\Payments\Model\Config\Source\Order\Status\Pendingpayment</source_model>
                 </field>
-         
+
                 <field id="allowspecific" translate="label" type="allowspecific" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Payment from Applicable Countries</label>
                     <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
@@ -136,7 +136,7 @@
                 </field>
             </group>
             <!-- // Conekta OXXO // -->
-            
+
             <!-- Conekta SPEI -->
             <group id="conekta_spei" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Conekta SPEI</label>
@@ -151,7 +151,7 @@
                     <label>New Order Status</label>
                     <source_model>Conekta\Payments\Model\Config\Source\Order\Status\Pendingpayment</source_model>
                 </field>
-         
+
                 <field id="allowspecific" translate="label" type="allowspecific" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Payment from Applicable Countries</label>
                     <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
