@@ -1,3 +1,8 @@
+## [2.0.5](https://github.com/conekta/conekta-magento2/releases/tag/v2.0.5) - 2019-04-19
+### Fix
+- Allow live and test private_api_key to be eddited in website scope
+- Allow sandbox_mode to be eddited in website scope
+
 ## [2.0.4](https://github.com/conekta/conekta-magento2/releases/tag/v2.0.4) - 2019-03-20
 ### Fix
 - Fix Front controller reached 100 router match iterations
