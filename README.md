@@ -2,7 +2,7 @@
 
 <div align="center">
 
-Magento 2 Plugin v.2.0.2 (Stable)
+Magento 2 Plugin v.2.0.4 (Stable)
 ========================
 
 [![Made with PHP](https://img.shields.io/badge/made%20with-php-red.svg?style=for-the-badge&colorA=ED4040&colorB=C12C2D)](http://php.net) [![By Conekta](https://img.shields.io/badge/by-conekta-red.svg?style=for-the-badge&colorA=ee6130&colorB=00a4ac)](https://conekta.com)
@@ -31,7 +31,7 @@ Installation
     ```bash
     php bin/magento setup:di:compile
     ```
-    
+
 Updates
 -----------
 
@@ -50,7 +50,7 @@ The plugin has been tested in Magento 2.2.0. Support is not guaranteed for untes
 ## How to contribute to the project
 
 1. Fork the repository
- 
+
 2. Clone the repository
 ```
     git clone git@github.com:yourUserName/conekta-magento2.git
@@ -61,7 +61,7 @@ The plugin has been tested in Magento 2.2.0. Support is not guaranteed for untes
     git pull origin develop
     # You should choose the name of your branch
     git checkout -b <feature/my_branch>
-```    
+```
 4. Make necessary changes and commit those changes
 ```
     git add .

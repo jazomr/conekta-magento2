@@ -3,11 +3,14 @@ namespace Conekta\Payments\Model;
 
 use Conekta\Webhook;
 use Conekta\Error;
-class Config extends \Magento\Payment\Model\Method\AbstractMethod {
+
+class Config extends \Magento\Payment\Model\Method\AbstractMethod
+{
     const CODE = 'conekta_config';
     protected $_code = self::CODE;
 
-    public static  function checkBalance($order, $total) {
+    public static function checkBalance($order, $total)
+    {
         $amount = 0;
         foreach ($order['line_items'] as $lineItem) {
             $amount = $amount +
@@ -37,12 +40,14 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
     public static function getCardToken($info)
     {
         $cardToken = $info->getAdditionalInformation('card_token');
-        if (!$cardToken)
+        if (!$cardToken) {
             throw new \Magento\Framework\Validator\Exception(__('Error process your card info.'));
+        }
         return $cardToken;
     }
 
-    public static function getChargeCard($amount, $tokenId) {
+    public static function getChargeCard($amount, $tokenId)
+    {
         $charge = array(
             'payment_method' => array(
                 'type'     => 'card',
@@ -53,7 +58,8 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
         return $charge;
     }
 
-    public  function createWebhook() {
+    public function createWebhook()
+    {
         $sandboxMode = (boolean) ((integer) $this->getConfigData("sandbox_mode"));
         if ($sandboxMode) {
             $privateKey = (string) $this->getConfigData("test_private_api_key");
@@ -101,7 +107,8 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
             );
             throw new \Magento\Framework\Validator\Exception(
                 __('Can not register this webhook ' . $urlWebhook . '<br>'
-                    . 'Message: ' . (string) $errorMessage));
+                . 'Message: ' . (string) $errorMessage)
+            );
         }
     }
 
@@ -126,9 +133,9 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
             \Conekta\Conekta::setApiKey($privateKey);
             \Conekta\Conekta::setApiVersion("2.0.0");
             \Conekta\Conekta::setPlugin("Magento 2");
-            \Conekta\Conekta::setPluginVersion("2.0.2");
+            \Conekta\Conekta::setPluginVersion("2.0.4");
             \Conekta\Conekta::setLocale($locale);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             throw new \Magento\Framework\Validator\Exception(
                 __($e->getMessage())
             );
@@ -202,8 +209,9 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
         $order->getAllVisibleItems();
         $items = $order->getAllVisibleItems();
         foreach ($items as $itemId => $item) {
-            if ($item->getProductType() == 'simple' && $item->getPrice() <= 0)
+            if ($item->getProductType() == 'simple' && $item->getPrice() <= 0) {
                 break;
+            }
             $lineItems[] = [
                 'name' => $item->getName(),
                 'sku' => $item->getSku(),
@@ -288,8 +296,9 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
         foreach ($order->getAllItems() as $item) {
             if (floatval($item->getDiscountAmount()) > 0.0) {
                 $description = $order->getDiscountDescription();
-                if (empty($description))
+                if (empty($description)) {
                     $description = "discount_code";
+                }
                 $discountLine = [];
                 $discountLine["code"] = $description;
                 $discountLine["type"] = "coupon";
@@ -320,8 +329,9 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
     {
         $taxLines = [];
         foreach ($order->getAllItems() as $item) {
-            if ($item->getProductType() == 'simple' && $item->getPrice() <= 0)
+            if ($item->getProductType() == 'simple' && $item->getPrice() <= 0) {
                 break;
+            }
             $taxLines[] = [
                 'description' => self::getTaxName($item),
                 'amount' => intval(strval($item->getTaxAmount()) * 100)
@@ -342,8 +352,9 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
         $taxClassId = $_product->getTaxClassId();
         $taxClass = $objectManager->get('Magento\Tax\Model\ClassModel')->load($taxClassId);
         $taxClassName = $taxClass->getClassName();
-        if (empty($taxClassName))
+        if (empty($taxClassName)) {
             $taxClassName = "tax";
+        }
 
         return $taxClassName;
     }
@@ -356,12 +367,13 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod {
     public static function getCustomerName($order)
     {
         $billing = $order->getBillingAddress()->getData();
-        $customerName = sprintf('%s %s %s', 
-            $billing['firstname'], 
-            $billing['middlename'], 
+        $customerName = sprintf(
+            '%s %s %s',
+            $billing['firstname'],
+            $billing['middlename'],
             $billing['lastname']
-            );
-        
+        );
+
         return $customerName;
     }
 }

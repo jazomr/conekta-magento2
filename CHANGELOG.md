@@ -1,3 +1,7 @@
+## [2.0.4](https://github.com/conekta/conekta-magento2/releases/tag/v2.0.4) - 2019-03-20
+### Fix
+- Fix Front controller reached 100 router match iterations
+
 ## [2.0.2](https://github.com/conekta/conekta-magento2/releases/tag/v2.0.2) - 2018-10-09
 ### Fix
 - Fix on webhook bug
