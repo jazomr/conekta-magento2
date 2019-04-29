@@ -1,3 +1,12 @@
+## [2.0.6](https://github.com/conekta/conekta-magento2/releases/tag/v2.0.5) - 2019-04-19
+### Fix
+- Enable Signature Key validation on Webhook
+- Create invoice on wenhook notification
+
+### Added
+- Now the ordes are created with order_status defined in payment.xml
+- Created a plugin to use order_status config data insted of default Magento processing status
+
 ## [2.0.5](https://github.com/conekta/conekta-magento2/releases/tag/v2.0.5) - 2019-04-19
 ### Fix
 - Allow live and test private_api_key to be eddited in website scope
