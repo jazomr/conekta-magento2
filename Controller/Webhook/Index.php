@@ -6,6 +6,9 @@ use Magento\Framework\App\Action\Action;
 use Magento\Sales\Model\Order;
 use Magento\Sales\Api\Data\OrderPaymentInterface;
 use Magento\Framework\Controller\ResultFactory;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Store\Model\StoreManagerInterface;
+use Magento\Store\Model\ScopeInterface;
 
 class Index extends Action
 {
@@ -45,30 +48,51 @@ class Index extends Action
     protected $_payment;
 
     /**
+     * @var ScopeConfigInterface
+     */
+    protected $_scopeConfig;
+
+    /**
+     * @var StoreManagerInterface
+     */
+    protected $_storeManager;
+
+    /**
      * @param \Magento\Framework\App\Action\Context     $context
      * @param \Magento\Sales\Model\OrderFactory         $orderFactory
      * @param \Magento\Sales\Model\Order\PaymentFactory $paymentFactory
      * @param \Psr\Log\LoggerInterface                  $logger
-     * @param Magento\Sales\Model\OrderRepository $orderRepository
+     * @param Magento\Sales\Model\OrderRepository       $orderRepository
+     * @param ScopeConfigInterface                      $scopeConfig
+     * @param StoreManagerInterface                     $storeManager
      */
     public function __construct(
         \Magento\Framework\App\Action\Context $context,
         \Magento\Sales\Model\OrderFactory $orderFactory,
         \Magento\Sales\Model\Order\PaymentFactory $paymentFactory,
         \Psr\Log\LoggerInterface $logger,
-        \Magento\Sales\Model\OrderRepository $orderRepository
+        \Magento\Sales\Model\OrderRepository $orderRepository,
+        ScopeConfigInterface $scopeConfig,
+        StoreManagerInterface $storeManager
     ) {
         $this->_orderRepository = $orderRepository;
         $this->_resultFactory = $context->getResultFactory();
         $this->_logger = $logger;
         $this->_orderFactory = $orderFactory;
         $this->_paymentFactory =  $paymentFactory;
+        $this->_scopeConfig = $scopeConfig;
+        $this->_storeManager = $storeManager;
         parent::__construct($context);
     }
     public function execute()
     {
         $body = @file_get_contents('php://input');
         $event = json_decode($body);
+        $authenticated = $this->authenticateEvent($body, $_SERVER['HTTP_DIGEST']);
+
+        if (!$authenticated) {
+            return $this->processErrorResponse();
+        }
 
         if (!isset($event->data->object)) {
             $this->_logger->critical("The event has no data object");
@@ -140,5 +164,45 @@ class Index extends Action
             ->setData([])
             ->setHttpResponseCode(404);
         return $resultPage;
+    }
+
+    private function authenticateEvent($body, $digest)
+    {
+        $private_key_string = $this->getPrivateKey();
+        if (!empty($private_key_string) && !empty($body)) {
+            if (!empty($digest)) {
+                $private_key = openssl_pkey_get_private($private_key_string);
+                $encrypted_message = base64_decode($digest);
+                $sha256_message = "";
+                $bool = openssl_private_decrypt($encrypted_message, $sha256_message, $private_key);
+                if (hash("sha256", $body) == $sha256_message) {
+                    return true;
+                }
+                $this->_logger->critical('Event not authenticatedn');
+                return false;
+            } else {
+                $this->_logger->critical('Empty digest');
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private function getPrivateKey()
+    {
+        $isSandbox = (boolean)((integer)$this->_getConektaConfig('sandbox_mode'));
+        if ($isSandbox) {
+            $privateKey = $this->_getConektaConfig('live_signature_key');
+        } else {
+            $privateKey = $this->_getConektaConfig('test_signature_key');
+        }
+        return $privateKey;
+    }
+
+    private function _getConektaConfig($field)
+    {
+        $store = $this->_storeManager->getStore();
+        $path = 'payment/' . \Conekta\Payments\Model\Config::CODE . '/' . $field;
+        return $this->_scopeConfig->getValue($path, ScopeInterface::SCOPE_STORE, $store);
     }
 }
