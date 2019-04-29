@@ -8,11 +8,13 @@
                 <!-- Setup API Key's -->
                 <test_private_api_key backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
                 <live_private_api_key backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <live_signature_key backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <test_signature_key backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
                 <!-- // Setup API Key's // -->
                 <sandbox_mode>1</sandbox_mode>
             </conekta_config>
             <!-- // Conekta Config // -->
-            
+
             <!-- Conekta Card -->
             <conekta_card>
                 <active>0</active>
@@ -40,7 +42,7 @@
                 <expiry_days>30</expiry_days>
             </conekta_oxxo>
             <!-- // Conekta OXXO // -->
-            
+
             <!-- Conekta SPEI -->
             <conekta_spei>
                 <active>0</active>
