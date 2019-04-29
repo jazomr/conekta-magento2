@@ -88,11 +88,14 @@ class Index extends Action
     {
         $body = @file_get_contents('php://input');
         $event = json_decode($body);
-        $authenticated = $this->authenticateEvent($body, $_SERVER['HTTP_DIGEST']);
 
-        if (!$authenticated) {
-            return $this->processErrorResponse();
+        if (isset($_SERVER['HTTP_DIGEST'])) {
+            $authenticated = $this->authenticateEvent($body, $_SERVER['HTTP_DIGEST']);
+            if (!$authenticated) {
+                return $this->processErrorResponse();
+            }
         }
+
 
         if (!isset($event->data->object)) {
             $this->_logger->critical("The event has no data object");
@@ -145,7 +148,7 @@ class Index extends Action
         $this->_payment->setIsTransactionApproved(true);
         $this->_payment->setCurrencyCode($single_charge->currency);
         $this->_payment->registerCaptureNotification($single_charge->amount / 100, true);
-        $this->_orderRepository->save($order);
+        $this->_orderRepository->save($this->_order);
     }
 
     private function processResponse()
@@ -168,24 +171,28 @@ class Index extends Action
 
     private function authenticateEvent($body, $digest)
     {
-        $private_key_string = $this->getPrivateKey();
-        if (!empty($private_key_string) && !empty($body)) {
-            if (!empty($digest)) {
-                $private_key = openssl_pkey_get_private($private_key_string);
-                $encrypted_message = base64_decode($digest);
-                $sha256_message = "";
-                $bool = openssl_private_decrypt($encrypted_message, $sha256_message, $private_key);
-                if (hash("sha256", $body) == $sha256_message) {
-                    return true;
+        try {
+            $private_key_string = $this->getPrivateKey();
+            if (!empty($private_key_string) && !empty($body)) {
+                if (!empty($digest)) {
+                    $private_key = openssl_pkey_get_private($private_key_string);
+                    $encrypted_message = base64_decode($digest);
+                    $sha256_message = "";
+                    $bool = openssl_private_decrypt($encrypted_message, $sha256_message, $private_key);
+                    if (hash("sha256", $body) == $sha256_message) {
+                        return true;
+                    }
+                    $this->_logger->critical('Event not authenticatedn');
+                    return false;
+                } else {
+                    $this->_logger->critical('Empty digest');
+                    return false;
                 }
-                $this->_logger->critical('Event not authenticatedn');
-                return false;
-            } else {
-                $this->_logger->critical('Empty digest');
-                return false;
             }
+            return true;
+        } catch (\Exception $e) {
+            return true;
         }
-        return true;
     }
 
     private function getPrivateKey()
