@@ -1,4 +1,8 @@
-## [2.0.6](https://github.com/conekta/conekta-magento2/releases/tag/v2.0.5) - 2019-04-19
+## [2.0.7](https://github.com/conekta/conekta-magento2/releases/tag/v2.0.7) - 2019-04-28
+### Fix
+- Avoid PHP Notice Errors and catch if signature is not valid
+
+## [2.0.6](https://github.com/conekta/conekta-magento2/releases/tag/v2.0.6) - 2019-04-28
 ### Fix
 - Enable Signature Key validation on Webhook
 - Create invoice on wenhook notification
