@@ -36,7 +36,7 @@
                     <label>Sandbox</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="conekta_webhook" translate="label" type="text" sortOrder="8" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="conekta_webhook" translate="label" type="text" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Webhook</label>
                     <comment>
                         <![CDATA[Default webhook is: <strong>your_magento_host/conekta/webhook/listener</strong>]]>
