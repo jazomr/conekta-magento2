@@ -1,3 +1,7 @@
+## [2.0.8](https://github.com/conekta/conekta-magento2/releases/tag/v2.0.8) - 2019-05-01
+### Fix
+- Enable webhook notification per website
+
 ## [2.0.7](https://github.com/conekta/conekta-magento2/releases/tag/v2.0.7) - 2019-04-28
 ### Fix
 - Avoid PHP Notice Errors and catch if signature is not valid
