@@ -2,7 +2,7 @@
     "name": "conekta/conekta_payments",
     "description": "Conekta rules!",
     "type": "magento2-module",
-    "version": "2.0.8",
+    "version": "2.0.9",
     "minimum-stability": "stable",
     "require": {
         "conekta/conekta-php": "*"
