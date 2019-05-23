@@ -35,8 +35,8 @@ class Oxxo extends Offline
         Logger $logger,
         AbstractResource $resource = null,
         AbstractDb $resourceCollection = null,
-        array $data = array())
-    {
+        array $data = array()
+    ) {
         parent::__construct(
             $context,
             $registry,
@@ -47,7 +47,8 @@ class Oxxo extends Offline
             $logger,
             $resource,
             $resourceCollection,
-            $data);
+            $data
+        );
     }
 
     public function authorize(InfoInterface $payment, $amount)
@@ -73,6 +74,7 @@ class Oxxo extends Offline
         $days = $this->getConfigData("expiry_days");
         $chargeExpiration = strtotime("+" . $days . " days");
         $chargeParams = Config::getChargeOxxo($totalAmount, $chargeExpiration);
+        $chargeParams['reference_id'] = $order->getIncrementId();
 
         try {
             $orderData = Config::checkBalance($orderData, $totalAmount);

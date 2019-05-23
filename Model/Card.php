@@ -68,7 +68,7 @@ class Card extends Cc
             $data
         );
 
-        if (!class_exists('\\Conekta\\Payments\\Model\\Config')){
+        if (!class_exists('\\Conekta\\Payments\\Model\\Config')) {
             throw new \Magento\Framework\Validator\Exception(
                 __("Class Conekta\\Payments\\Model\\Config not found.")
             );
@@ -89,7 +89,6 @@ class Card extends Cc
             ));
 
         if ($this->_activeMonthlyInstallments) {
-
             $this->_monthlyInstallments = $this->getConfigData(
                 'monthly_installments'
             );
@@ -99,10 +98,8 @@ class Card extends Cc
                     'minimum_amount_monthly_installments'
                 );
             if (empty($this->_minAmountMonthInstallments)
-                || $this->_minAmountMonthInstallments <= 0){
-
+                || $this->_minAmountMonthInstallments <= 0) {
                 $this->_minAmountMonthInstallments = MINAMOUNT;
-
             }
         }
 
@@ -151,7 +148,8 @@ class Card extends Cc
      * @return $this
      * @throws \Exception
      */
-    public function assignData(\Magento\Framework\DataObject $data) {
+    public function assignData(\Magento\Framework\DataObject $data)
+    {
 
         parent::assignData($data);
 
@@ -160,23 +158,24 @@ class Card extends Cc
         $info = $this->getInfoInstance();
 
         if (key_exists('additional_data', $content)) {
-
-            if (key_exists('card_token',$content['additional_data'])) {
+            if (key_exists('card_token', $content['additional_data'])) {
                 $additionalData = $content['additional_data'];
 
                 $info->setAdditionalInformation(
-                    'card_token', $additionalData['card_token']
+                    'card_token',
+                    $additionalData['card_token']
                 );
                 $info->setCcType($additionalData['cc_type'])
                     ->setCcExpYear($additionalData['cc_exp_year'])
                     ->setCcExpMonth($additionalData['cc_exp_month']);
 
                 // Additional data
-                if (key_exists('monthly_installments', $additionalData))
+                if (key_exists('monthly_installments', $additionalData)) {
                     $info->setAdditionalInformation(
                         'monthly_installments',
                         $additionalData['monthly_installments']
                     );
+                }
 
                 // PCI assurance
                 $info->setAdditionalInformation(
@@ -187,7 +186,6 @@ class Card extends Cc
                     'cc_last_4',
                     $additionalData['cc_last_4']
                 );
-
             } else {
                 $this->_logger->error(__('[Conekta]: Card token not found.'));
                 throw new \Magento\Framework\Validator\Exception(
@@ -198,7 +196,8 @@ class Card extends Cc
             if ($this->isActiveMonthlyInstallments()) {
                 if (key_exists(
                     'monthly_installments',
-                    $content['additional_data'])){
+                    $content['additional_data']
+                )) {
                     $info->setAdditionalInformation(
                         'monthly_installments',
                         $content['additional_data']['monthly_installments']
@@ -244,8 +243,9 @@ class Card extends Cc
                 $finalAmount,
                 Config::getCardToken($info)
             );
-        }catch(\Exception $e){
-            $this->_logger->log(100,$e->getMessage());
+            $chargeParams['reference_id'] = $order->getIncrementId();
+        } catch (\Exception $e) {
+            $this->_logger->log(100, $e->getMessage());
             throw new \Magento\Framework\Validator\Exception(
                 __('Problem Creating Charge')
             );
@@ -253,10 +253,10 @@ class Card extends Cc
 
         if ($this->isActiveMonthlyInstallments()
             && intval($monthlyInstallments) > 1) {
-
             if ($this->_validateMonthlyInstallments(
-                $finalAmount, $monthlyInstallments)) {
-
+                $finalAmount,
+                $monthlyInstallments
+            )) {
                 $chargeParams
                 ['payment_method']
                 ['monthly_installments'] = $monthlyInstallments;
@@ -270,8 +270,7 @@ class Card extends Cc
                 $this->_logger->error(
                     __('[Conekta]: installments: '
                         .  $monthlyInstallments
-                        . ' Amount: ' . $finalAmount
-                    )
+                        . ' Amount: ' . $finalAmount)
                 );
                 throw new \Magento\Framework\Validator\Exception(
                     __('Problem with monthly installments.')
@@ -291,15 +290,14 @@ class Card extends Cc
             $payment
                 ->setTransactionId($newCharge->id)
                 ->setIsTransactionClosed(0);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $this->_logger->error(
                 __('[Conekta]: Payment capturing error. '
                     . $e->getMessage())
             );
             throw new \Magento\Framework\Validator\Exception(__(
-                    $e->getMessage()
-                )
-            );
+                $e->getMessage()
+            ));
         }
         return $this;
     }
@@ -324,7 +322,7 @@ class Card extends Cc
                 'transaction_id' => $transactionId,
                 'exception'      => $e->getMessage()
             ]);
-            $this->_logger->log(100,$logData);
+            $this->_logger->log(100, $logData);
             $this->_logger->error(__('Payment refunding error.'));
             throw new \Magento\Framework\Validator\Exception(
                 __('Payment refunding error.')
@@ -351,7 +349,7 @@ class Card extends Cc
      */
     public function isAvailable(\Magento\Quote\Api\Data\CartInterface $quote = null)
     {
-        if(self::amountBetweenBounds($quote,$this->_minAmount, $this->_maxAmount)){
+        if (self::amountBetweenBounds($quote, $this->_minAmount, $this->_maxAmount)) {
             return false;
         }
 
@@ -364,12 +362,12 @@ class Card extends Cc
 
     public static function amountBetweenBounds($quote, $min, $max)
     {
-        if(!$quote){
+        if (!$quote) {
             return false;
         }
         $grandTotal = $quote->getBaseGrandTotal();
 
-        if($grandTotal < $min || $grandTotal > $max){
+        if ($grandTotal < $min || $grandTotal > $max) {
             return false;
         }
         return true;
@@ -409,7 +407,7 @@ class Card extends Cc
             "MC" => "MasterCard"
         ];
         $out = [];
-        foreach ($activeTypes AS $value) {
+        foreach ($activeTypes as $value) {
             $out[$value] = $supportType[$value];
         }
 
@@ -417,7 +415,7 @@ class Card extends Cc
     }
 
     /**
-     * isActiveMonthlyInstallments 
+     * isActiveMonthlyInstallments
      * return if is active monthly installments
      * @return boolean
      */
@@ -459,9 +457,9 @@ class Card extends Cc
     private function _validateMonthlyInstallments($totalAmount, $installments)
     {
         if ($totalAmount >= $this->getMinimumAmountMonthlyInstallment()) {
-            if (intval($installments) > 1)
-
+            if (intval($installments) > 1) {
                 return ($totalAmount > ($installments * 100));
+            }
         }
 
         return false;
@@ -471,7 +469,8 @@ class Card extends Cc
      * Conekta Config getter
      * @return Config
      */
-    private function _getConektaConfig($field){
+    private function _getConektaConfig($field)
+    {
         $path = 'payment/' . \Conekta\Payments\Model\Config::CODE . '/' . $field;
 
         return $this
@@ -522,13 +521,13 @@ class Card extends Cc
 
                 // Validate only main brands.
                 $ccNumAndTypeMatches = isset(
-                        $ccTypeRegExpList[$info->getCcType()]
-                    ) && preg_match(
-                        $ccTypeRegExpList[$info->getCcType()],
-                        $ccNumber
-                    ) || !isset(
-                        $ccTypeRegExpList[$info->getCcType()]
-                    );
+                    $ccTypeRegExpList[$info->getCcType()]
+                ) && preg_match(
+                    $ccTypeRegExpList[$info->getCcType()],
+                    $ccNumber
+                ) || !isset(
+                    $ccTypeRegExpList[$info->getCcType()]
+                );
 
                 $ccType = $ccNumAndTypeMatches ? $info->getCcType() : 'OT';
             } else {
@@ -555,5 +554,4 @@ class Card extends Cc
 
         return $this;
     }
-
 }
