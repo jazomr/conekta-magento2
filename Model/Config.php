@@ -36,7 +36,6 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod
         return $order;
     }
 
-
     public static function getCardToken($info)
     {
         $cardToken = $info->getAdditionalInformation('card_token');
@@ -133,7 +132,7 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod
             \Conekta\Conekta::setApiKey($privateKey);
             \Conekta\Conekta::setApiVersion("2.0.0");
             \Conekta\Conekta::setPlugin("Magento 2");
-            \Conekta\Conekta::setPluginVersion("2.0.9");
+            \Conekta\Conekta::setPluginVersion("2.0.10");
             \Conekta\Conekta::setLocale($locale);
         } catch (\Exception $e) {
             throw new \Magento\Framework\Validator\Exception(
@@ -179,6 +178,26 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod
     }
 
     /**
+     * Charge details getter
+     * @param $order
+     * @return array
+     */
+    public static function getBillingAddress($order)
+    {
+        $billing = $order->getBillingAddress()->getData();
+        $chargeDetails = [
+            "city"        => $billing['city'],
+            "country"     => $billing['country_id'],
+            "phone"       => $billing['telephone'],
+            "zip"         => $billing['postcode'],
+            "email"       => $order->getCustomerEmail(),
+            "street1"     => $billing['street'],
+            "state"       => $billing['region']
+        ];
+        return $chargeDetails;
+    }
+
+    /**
      * Customer info getter
      * @param $order
      * @return array
@@ -187,9 +206,9 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod
     {
         $billing = $order->getBillingAddress()->getData();
         $customerInfo = [
-            'name' => self::getCustomerName($order),
-            'email' => $order->getCustomerEmail(),
-            'phone' => $billing['telephone'],
+            'name'     => self::getCustomerName($order),
+            'email'    => $order->getCustomerEmail(),
+            'phone'    => $billing['telephone'],
             'metadata' => [
                 'soft_validations' => true
             ]
@@ -209,17 +228,17 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod
         $order->getAllVisibleItems();
         $items = $order->getAllVisibleItems();
         foreach ($items as $itemId => $item) {
-            if ($item->getProductType() == 'simple' && $item->getPrice() <= 0) {
-                break;
+            if (!empty($item->getParentItemId()) && $item->getProductType() == 'simple') {
+                continue;
             }
             $lineItems[] = [
                 'name' => $item->getName(),
                 'sku' => $item->getSku(),
-                'unit_price' => intval(strval($item->getPrice()) * 100),
+                'unit_price' => (int) (strval($item->getPrice()) * 100),
                 'description' => strip_tags($objectManager
-                    ->get('Magento\Catalog\Model\Product')
+                    ->get(\Magento\Catalog\Model\Product::class)
                     ->load($item->getProductId())->getDescription()),
-                'quantity' => intval($item->getQtyOrdered()),
+                'quantity' => (int) ($item->getQtyOrdered()),
                 'tags' => [
                     $item->getProductType()
                 ]
@@ -329,8 +348,8 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod
     {
         $taxLines = [];
         foreach ($order->getAllItems() as $item) {
-            if ($item->getProductType() == 'simple' && $item->getPrice() <= 0) {
-                break;
+            if (!empty($item->getParentItemId()) && $item->getProductType() == 'simple') {
+                continue;
             }
             $taxLines[] = [
                 'description' => self::getTaxName($item),
@@ -348,9 +367,9 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod
     public static function getTaxName($item)
     {
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $_product = $objectManager->get('Magento\Catalog\Model\Product')->load($item->getProductId());
+        $_product = $objectManager->get(\Magento\Catalog\Model\Product::class)->load($item->getProductId());
         $taxClassId = $_product->getTaxClassId();
-        $taxClass = $objectManager->get('Magento\Tax\Model\ClassModel')->load($taxClassId);
+        $taxClass = $objectManager->get(\Magento\Tax\Model\ClassModel::class)->load($taxClassId);
         $taxClassName = $taxClass->getClassName();
         if (empty($taxClassName)) {
             $taxClassName = "tax";

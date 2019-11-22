@@ -150,7 +150,6 @@ class Card extends Cc
      */
     public function assignData(\Magento\Framework\DataObject $data)
     {
-
         parent::assignData($data);
 
         $content = (array) $data->getData();
@@ -204,6 +203,7 @@ class Card extends Cc
                     );
                 }
             }
+
             return $this;
         }
 
@@ -236,7 +236,9 @@ class Card extends Cc
         $orderParams['discount_lines']   = Config::getDiscountLines($order);
         $orderParams['shipping_contact'] = Config::getShippingContact($order);
 
-        $finalAmount = intval((float)$amount * 1000) / 10;
+        $orderParams['customer_info']['billing_address'] = Config::getBillingAddress($order);
+
+        $finalAmount = (int) ((float)$amount * 1000) / 10;
 
         try {
             $chargeParams = Config::getChargeCard(
