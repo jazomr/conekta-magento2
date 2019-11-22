@@ -1,3 +1,12 @@
+## [2.0.10](https://github.com/conekta/conekta-magento2/releases/tag/v2.0.9) - 2019-05-23
+### Added
+- Added reference_id to SPEI, OXXO and CARD charge
+
+### Fixed
+- PHP code standards with PHPCS
+- Sends Billing Address
+- Error when simple and configurable both have prices in Magento > 2.2.8
+
 ## [2.0.9](https://github.com/conekta/conekta-magento2/releases/tag/v2.0.9) - 2019-05-23
 ### Added
 - Added reference_id to SPEI, OXXO and CARD charge
