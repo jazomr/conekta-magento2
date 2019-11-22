@@ -132,7 +132,7 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod
             \Conekta\Conekta::setApiKey($privateKey);
             \Conekta\Conekta::setApiVersion("2.0.0");
             \Conekta\Conekta::setPlugin("Magento 2");
-            \Conekta\Conekta::setPluginVersion("2.0.9");
+            \Conekta\Conekta::setPluginVersion("2.0.10");
             \Conekta\Conekta::setLocale($locale);
         } catch (\Exception $e) {
             throw new \Magento\Framework\Validator\Exception(
@@ -228,8 +228,8 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod
         $order->getAllVisibleItems();
         $items = $order->getAllVisibleItems();
         foreach ($items as $itemId => $item) {
-            if ($item->getProductType() == 'simple' && $item->getPrice() <= 0) {
-                break;
+            if (!empty($item->getParentItemId()) && $item->getProductType() == 'simple') {
+                continue;
             }
             $lineItems[] = [
                 'name' => $item->getName(),
@@ -348,8 +348,8 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod
     {
         $taxLines = [];
         foreach ($order->getAllItems() as $item) {
-            if ($item->getProductType() == 'simple' && $item->getPrice() <= 0) {
-                break;
+            if (!empty($item->getParentItemId()) && $item->getProductType() == 'simple') {
+                continue;
             }
             $taxLines[] = [
                 'description' => self::getTaxName($item),
@@ -367,9 +367,9 @@ class Config extends \Magento\Payment\Model\Method\AbstractMethod
     public static function getTaxName($item)
     {
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $_product = $objectManager->get(Magento\Catalog\Model\Product::class)->load($item->getProductId());
+        $_product = $objectManager->get(\Magento\Catalog\Model\Product::class)->load($item->getProductId());
         $taxClassId = $_product->getTaxClassId();
-        $taxClass = $objectManager->get(Magento\Tax\Model\ClassModel::class)->load($taxClassId);
+        $taxClass = $objectManager->get(\Magento\Tax\Model\ClassModel::class)->load($taxClassId);
         $taxClassName = $taxClass->getClassName();
         if (empty($taxClassName)) {
             $taxClassName = "tax";

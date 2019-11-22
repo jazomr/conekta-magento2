@@ -53,7 +53,7 @@ class Router implements RouterInterface
             return;
         }
 
-        if ($info[0] !== "conekta" && $info[1] !== "webhook" && $info[2] !== "listener") {
+        if ($info[0] !== "conekta" || $info[1] !== "webhook" || $info[2] !== "listener") {
             return;
         }
         $request->setModuleName('conekta')->setControllerName('webhook')->setActionName('index');
