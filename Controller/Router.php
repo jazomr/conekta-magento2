@@ -17,7 +17,7 @@ class Router implements RouterInterface
      *
      * @var \Magento\Framework\App\ResponseInterface
      */
-    protected $response;
+    protected $_response;
 
     /**
      * @param \Magento\Framework\App\ActionFactory $actionFactory
@@ -28,7 +28,7 @@ class Router implements RouterInterface
         \Magento\Framework\App\ResponseInterface $response
     ) {
         $this->actionFactory = $actionFactory;
-        $this->response = $response;
+        $this->_response = $response;
     }
 
     /**
@@ -40,10 +40,11 @@ class Router implements RouterInterface
     public function match(\Magento\Framework\App\RequestInterface $request)
     {
         if ($request->getModuleName() === 'conekta') {
-                return;
+            return;
         }
-        $ident = trim($request->getPathInfo(), '/');
-        $pathInfo = explode('/', $ident);
+        $_identifier = trim($request->getPathInfo(), '/');
+        $pathInfo = explode('/', $_identifier);
+
 
         $identifier = implode('/', $pathInfo);
 
@@ -53,14 +54,15 @@ class Router implements RouterInterface
             return;
         }
 
-        if ($info[0] !== "conekta" || $info[1] !== "webhook" || $info[2] !== "listener") {
+        if ($info[0] === "conekta" && $info[1] === "webhook" && $info[2] === "listener") {
+            $request->setModuleName('conekta')->setControllerName('webhook')->setActionName('index');
+            $request->setAlias(\Magento\Framework\Url::REWRITE_REQUEST_PATH_ALIAS, $_identifier);
+        } else {
             return;
         }
-        $request->setModuleName('conekta')->setControllerName('webhook')->setActionName('index');
-        $request->setAlias(\Magento\Framework\Url::REWRITE_REQUEST_PATH_ALIAS, $ident);
 
         return $this->actionFactory->create(
-            Magento\Framework\App\Action\Forward::class,
+            \Magento\Framework\App\Action\Forward::class,
             ['request' => $request]
         );
     }
