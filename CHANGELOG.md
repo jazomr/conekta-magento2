@@ -1,4 +1,8 @@
-## [2.0.10](https://github.com/conekta/conekta-magento2/releases/tag/v2.0.9) - 2019-05-23
+## [2.0.11](https://github.com/conekta/conekta-magento2/releases/tag/v2.0.11) - 2019-05-23
+### Added
+- Add Compatibility to magento 2.3
+
+## [2.0.10](https://github.com/conekta/conekta-magento2/releases/tag/v2.0.10) - 2019-05-23
 ### Added
 - Added reference_id to SPEI, OXXO and CARD charge
 
